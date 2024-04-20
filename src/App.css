@@ -1,0 +1,124 @@
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ff_inter {
+  font-family: "Inter", sans-serif;
+}
+
+.ff-outfit {
+  font-family: "Outfit", sans-serif;
+}
+
+.ff_great_vibes {
+  font-family: "Great Vibes", cursive;
+}
+
+.svg_color.active svg path {
+  fill: white !important;
+}
+
+.svg_stroke.active svg path {
+  stroke: white
+}
+
+.svg_color.active {
+  background-color: #B63336;
+}
+
+.svg_color.active h2 {
+  color: white;
+}
+
+.svg_stroke.active {
+  background-color: #B63336;
+}
+
+.svg_stroke.active h2 {
+  color: white;
+}
+
+.content_width {
+  width: calc(100% - 268px);
+}
+
+.content_height {
+  height: calc(100% - 200px);
+}
+
+.sidebar {
+  max-height: 100vh;
+  overflow-y: scroll;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 0;
+}
+
+.project_data_active svg path {
+  fill: #B63336;
+}
+
+.project_data_active h2 {
+  color: #B63336;
+  background-color: transparent;
+}
+
+.navbar_width {
+  width: calc(100% - 268px);
+}
+
+.btn_green {
+  background-color: #04B92C;
+}
+
+.btn_grey {
+  background-color: #575757;
+}
+
+.btn_red {
+  background-color:
+    #B63336;
+}
+
+
+.svg-icon.hover svg path {
+  fill: white !important;
+}
+
+.ql-toolbar.ql-snow {
+  border: transparent !important;
+
+}
+
+.ql-container.ql-snow {
+  border: transparent !important;
+}
+.no-scroll{
+  overflow: hidden !important;
+}
+.bg_login{
+  box-shadow: 0px 7px 10px 0px rgba(0, 0, 0, 0.1);
+  border: 1px solid;
+  border-image-source: linear-gradient(143.55deg, rgba(255, 184, 0, 0.4) -2.64%, rgba(153, 0, 0, 0.4) 105.05%);
+  background: rgba(255, 255, 255, 0.33);
+}
+.question_height{
+  height: calc(100vh - 230px) !important;
+}/* For Webkit (Chrome, Safari, etc.) */
+::-webkit-scrollbar {
+  width: 3px; /* width of the scrollbar */
+  height: 5px; /* height of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(219, 63, 63); /* color of the scrollbar */
+}
+.table_hight{
+ height: calc(100vh - 180px);
+}
