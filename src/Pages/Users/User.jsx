@@ -28,12 +28,14 @@ const User = () => {
   useEffect(() => {
     const filteredData = studentsData.filter((student) => {
       const fullName = student.name && student.name.toLowerCase(); 
-      const email = student.email && student.email.toLowerCase(); 
-
-      if (searchCategory === "Name" && fullName) {
+      const hometown = student.hometown && student.hometown.toLowerCase(); 
+      const countrydestination = student.coutryHigherStudies && student.coutryHigherStudies.toLowerCase(); 
+      if (searchCategory === "SchoolName" && fullName) {
         return fullName.includes(searchValue.toLowerCase());
-      } else if (searchCategory === "Email" && email) {
-        return email.includes(searchValue.toLowerCase());
+      } else if (searchCategory === "hometown" && hometown) {
+        return hometown.includes(searchValue.toLowerCase());
+      } else if (searchCategory === "countrydestination" && countrydestination) {
+        return countrydestination.includes(searchValue.toLowerCase());
       }else {
         return false;
       }
@@ -166,7 +168,7 @@ const User = () => {
                     {searchCategory}
                   </button>
                   {isOpen && (
-                    <div className="absolute right-0 mt-2 w-[100px] origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <div className="absolute right-0 mt-2 w-[150px] origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div
                         className="py-1"
                         role="menu"
@@ -176,22 +178,32 @@ const User = () => {
                         <button
                           onClick={() => {
                             setIsOpen(false);
-                            setSearchCategory("Name");
+                            setSearchCategory("SchoolName");
                           }}
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                         >
-                          Name
+                         School
                         </button>
                         <button
                           onClick={() => {
                             setIsOpen(false);
-                            setSearchCategory("Email");
+                            setSearchCategory("hometown");
                           }}
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                         >
-                          Email
+                         hometown
+                        </button>
+                        <button
+                          onClick={() => {
+                            setIsOpen(false);
+                            setSearchCategory("countrydestination");
+                          }}
+                          className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                        >
+                         CountryDestination
                         </button>
                       </div>
                     </div>
@@ -252,16 +264,16 @@ const User = () => {
                       Alternate Phone Number
                     </th>
                     <th className=" border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[300px]">
-                      The hometown for them
+                      Hometown
                     </th>
                     <th className=" border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[300px]">
-                      The country calling their name for higher studies?
+                    Destination for Higher Studies
                     </th>
                     <th className=" border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[200px]">
                       Choice of IELTS or PTE
                     </th>
                     <th className=" border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[350px]">
-                      School or college they last grace.
+                      School or college they last attended.
                     </th>
                     <th className=" border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]">
                       Age
@@ -327,7 +339,7 @@ const User = () => {
                         {value.IeltsOrPte}
                       </td>
                       <td className="border w-[350px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
-                        xyz high school
+                       {value.school}
                       </td>
                       <td className="border w-[150px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
                         24 Years
