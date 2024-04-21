@@ -29,13 +29,13 @@ const User = () => {
     const filteredData = studentsData.filter((student) => {
       const fullName = student.name && student.name.toLowerCase(); 
       const hometown = student.hometown && student.hometown.toLowerCase(); 
-      const Country Destination = student.coutryHigherStudies && student.coutryHigherStudies.toLowerCase(); 
+      const countrydestination = student.coutryHigherStudies && student.coutryHigherStudies.toLowerCase(); 
       if (searchCategory === "SchoolName" && fullName) {
         return fullName.includes(searchValue.toLowerCase());
       } else if (searchCategory === "hometown" && hometown) {
         return hometown.includes(searchValue.toLowerCase());
-      } else if (searchCategory === "Country Destination" && Country Destination) {
-        return Country Destination.includes(searchValue.toLowerCase());
+      } else if (searchCategory === "countrydestination" && countrydestination) {
+        return countrydestination.includes(searchValue.toLowerCase());
       }else {
         return false;
       }
@@ -198,7 +198,7 @@ const User = () => {
                         <button
                           onClick={() => {
                             setIsOpen(false);
-                            setSearchCategory("Country Destination");
+                            setSearchCategory("countrydestination");
                           }}
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
