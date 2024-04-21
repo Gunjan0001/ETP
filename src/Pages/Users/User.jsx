@@ -34,7 +34,7 @@ const User = () => {
         return fullName.includes(searchValue.toLowerCase());
       } else if (searchCategory === "hometown" && hometown) {
         return hometown.includes(searchValue.toLowerCase());
-      } else if (searchCategory === "countrydestination" && countrydestination) {
+      } else if (searchCategory === "Country Destination" && countrydestination) {
         return countrydestination.includes(searchValue.toLowerCase());
       }else {
         return false;
@@ -198,7 +198,7 @@ const User = () => {
                         <button
                           onClick={() => {
                             setIsOpen(false);
-                            setSearchCategory("countrydestination");
+                            setSearchCategory("Country Destination");
                           }}
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
