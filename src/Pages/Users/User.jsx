@@ -20,7 +20,7 @@ const User = () => {
   const [showpopup, setShowpopup] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [searchCategory, setSearchCategory] = useState("Name");
+  const [searchCategory, setSearchCategory] = useState("School Name");
   // context
   console.log(filteredStudents);
   
@@ -30,7 +30,7 @@ const User = () => {
       const fullName = student.name && student.name.toLowerCase(); 
       const hometown = student.hometown && student.hometown.toLowerCase(); 
       const countrydestination = student.coutryHigherStudies && student.coutryHigherStudies.toLowerCase(); 
-      if (searchCategory === "SchoolName" && fullName) {
+      if (searchCategory === "School Name" && fullName) {
         return fullName.includes(searchValue.toLowerCase());
       } else if (searchCategory === "hometown" && hometown) {
         return hometown.includes(searchValue.toLowerCase());
@@ -168,7 +168,7 @@ const User = () => {
                     {searchCategory}
                   </button>
                   {isOpen && (
-                    <div className="absolute right-0 mt-2 w-[150px] origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <div className="absolute right-0 mt-2 w-[180px] origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div
                         className="py-1"
                         role="menu"
@@ -178,12 +178,12 @@ const User = () => {
                         <button
                           onClick={() => {
                             setIsOpen(false);
-                            setSearchCategory("SchoolName");
+                            setSearchCategory("School Name");
                           }}
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                         >
-                         School
+                         School Name
                         </button>
                         <button
                           onClick={() => {
