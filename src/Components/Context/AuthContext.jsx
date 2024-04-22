@@ -5,12 +5,12 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../../firebase";
-
+import Loader from "../../Pages/Loader";
 const authContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState("");
-
+  const [loading, setLoading] = useState(true);
   function loginUser(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
   }
@@ -21,12 +21,17 @@ export function UserAuthContextProvider({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       localStorage.setItem("user", JSON.stringify(currentUser));
+      setLoading(false); // Set loading to false after initial user data is set or user is logged out
     });
 
     return () => {
       unsubscribe();
     };
   }, []);
+
+  if (loading) {
+    return <Loader></Loader>; // Display a loading indicator while user data is being fetched
+  }
 
   return (
     <authContext.Provider value={{ loginUser, logoutUser }}>

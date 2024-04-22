@@ -1,5 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Downarrow, FilterIcon, ThreeDotIcon } from "../../Components/Icons";
+import {
+  Arrow,
+  Downarrow,
+  FilterIcon,
+  SortIcon,
+  ThreeDotIcon,
+} from "../../Components/Icons";
 import {
   BinIcon,
   DownloadIcon,
@@ -21,28 +27,32 @@ const User = () => {
   const [searchValue, setSearchValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [searchCategory, setSearchCategory] = useState("School Name");
+  const [order, setorder] = useState("ASC");
   // context
-  console.log(filteredStudents);
-  
-  const { studentsData } = StudentgetterContext();
+  // console.log(filteredStudents);
+  const { studentsData, updateStudentData } = StudentgetterContext();
   useEffect(() => {
     const filteredData = studentsData.filter((student) => {
-      const fullName = student.name && student.name.toLowerCase(); 
-      const hometown = student.hometown && student.hometown.toLowerCase(); 
-      const countrydestination = student.coutryHigherStudies && student.coutryHigherStudies.toLowerCase(); 
-      if (searchCategory === "School Name" && fullName) {
-        return fullName.includes(searchValue.toLowerCase());
-      } else if (searchCategory === "hometown" && hometown) {
+      const schoolname = student.School && student.School.toLowerCase();
+      const hometown = student.hometown && student.hometown.toLowerCase();
+      const countrydestination =
+        student.coutryHigherStudies &&
+        student.coutryHigherStudies.toLowerCase();
+      if (searchCategory === "hometown" && hometown) {
         return hometown.includes(searchValue.toLowerCase());
-      } else if (searchCategory === "Country Destination" && countrydestination) {
+      } else if (
+        searchCategory === "Country Destination" &&
+        countrydestination
+      ) {
         return countrydestination.includes(searchValue.toLowerCase());
-      }else {
-        return false;
+      } else if (searchCategory === "School Name" && schoolname) {
+        return schoolname.includes(searchValue.toLowerCase());
+      } else {
+        return studentsData;
       }
     });
     setFilteredStudents(filteredData);
   }, [studentsData, searchValue, searchCategory]);
-
 
   useEffect(() => {
     if (showpopup) {
@@ -125,6 +135,54 @@ const User = () => {
     }
     return ((correctAnswers / totalQuestions) * 100).toFixed(2);
   };
+
+  const sorting = (col) => {
+    // Create a copy of the data array
+    const sortedData = [...studentsData];
+    // console.log("sorting data ,",sortedData)
+    if (order === "ASC") {
+      sortedData.sort((a, b) => {
+        const valueA =
+          typeof getProperty(a, col) === "number"
+            ? getProperty(a, col)
+            : getProperty(a, col).toLowerCase();
+        const valueB =
+          typeof getProperty(b, col) === "number"
+            ? getProperty(b, col)
+            : getProperty(b, col).toLowerCase();
+        return typeof valueA === "number"
+          ? valueA - valueB
+          : valueA.localeCompare(valueB);
+      });
+    } else {
+      // If the order is not ASC, assume it's DESC
+      sortedData.sort((a, b) => {
+        const valueA =
+          typeof getProperty(a, col) === "number"
+            ? getProperty(a, col)
+            : getProperty(a, col).toLowerCase();
+        const valueB =
+          typeof getProperty(b, col) === "number"
+            ? getProperty(b, col)
+            : getProperty(b, col).toLowerCase();
+        return typeof valueA === "number"
+          ? valueB - valueA
+          : valueB.localeCompare(valueA);
+      });
+    }
+    // Update the order state
+    const newOrder = order === "ASC" ? "DESC" : "ASC";
+    setorder(newOrder);
+    updateStudentData(sortedData);
+  };
+  const getProperty = (obj, path) => {
+    const keys = path.split(".");
+    let result = obj;
+    for (let key of keys) {
+      result = result[key];
+    }
+    return result;
+  };
   return (
     <>
       <div className="mt-10">
@@ -142,8 +200,8 @@ const User = () => {
             </div>
             {/* Dropdown to select search category */}
             <div className="flex items-center gap-[18px]">
-               {/* Dropdown for search category */}
-               <div className="flex items-center rounded-[10px] py-3 text-[#FF0000] bg-[#EFEFEF]">
+              {/* Dropdown for search category */}
+              <div className="flex items-center rounded-[10px] py-3 text-[#FF0000] bg-[#EFEFEF]">
                 <div className="relative">
                   <button
                     onClick={() => setIsOpen(!isOpen)}
@@ -183,7 +241,7 @@ const User = () => {
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                         >
-                         School Name
+                          School Name
                         </button>
                         <button
                           onClick={() => {
@@ -193,7 +251,7 @@ const User = () => {
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                         >
-                         hometown
+                          hometown
                         </button>
                         <button
                           onClick={() => {
@@ -203,7 +261,7 @@ const User = () => {
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                         >
-                         Country Destination
+                          Country Destination
                         </button>
                       </div>
                     </div>
@@ -222,7 +280,6 @@ const User = () => {
                   <SearchIcon />
                 </div>
               </div>
-             
               {/* Filter and Download Buttons */}
               <div className="ff-outfit text-base font-normal text-white ff_inter font-base bg-[#8C8C8C] py-3 gap-[10px] px-[15px] rounded-[10px] flex items-center">
                 <FilterIcon />
@@ -241,52 +298,110 @@ const User = () => {
         {/* Table Section */}
         <div className="py-5 px-8">
           <div className="overflow-x-scroll table_hight">
-          <table className="table-auto  w-[2979px]">
-              <div>
-                <thead className="table_head">
-                  <tr>
-                    <th className=" border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[99px]">
-                      <p> Sr.</p>
-                    </th>
-                    <th className=" border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[310px]">
+            <table className="table-auto w-[3000px]">
+              <thead>
+                <tr className="!w-full">
+                  <th className="border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[99px]">
+                    <p className="flex items-center justify-between">
+                      Sr.
+                      <SortIcon />
+                    </p>
+                  </th>
+                  <th
+                    onClick={() => sorting("name")}
+                    className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[310px]"
+                  >
+                    <p className="flex items-center justify-between">
                       Full Name
-                    </th>
-                    <th className=" border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[480px]">
+                      <SortIcon />
+                    </p>
+                  </th>
+                  <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[480px]">
+                    <p className="flex items-center justify-between">
                       Test Score
-                    </th>
-                    <th className=" border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[310px]">
+                      <SortIcon />
+                    </p>
+                  </th>
+                  <th
+                    onClick={() => sorting("email")}
+                    className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[313px]"
+                  >
+                    <p className="flex items-center justify-between">
                       Email Address
-                    </th>
-                    <th className=" border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[220px]">
+                      <SortIcon />
+                    </p>
+                  </th>
+                  <th
+                    onClick={() => sorting("phoneNumber")}
+                    className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[220px]"
+                  >
+                    <p className="flex items-center justify-between">
                       Phone Number
-                    </th>
-                    <th className=" border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[220px]">
+                      <SortIcon />
+                    </p>
+                  </th>
+                  <th
+                    onClick={() => sorting("alternatePhoneNumber")}
+                    className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[220px]"
+                  >
+                    <p className="flex items-center justify-between">
                       Alternate Phone Number
-                    </th>
-                    <th className=" border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[300px]">
+                      <SortIcon />
+                    </p>
+                  </th>
+                  <th
+                    onClick={() => sorting("hometown")}
+                    className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[300px]"
+                  >
+                    <p className="flex items-center justify-between">
                       Hometown
-                    </th>
-                    <th className=" border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[300px]">
-                    Destination for Higher Studies
-                    </th>
-                    <th className=" border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[200px]">
+                      <SortIcon />
+                    </p>
+                  </th>
+                  <th
+                    onClick={() => sorting("coutryHigherStudies")}
+                    className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[300px]"
+                  >
+                    <p className="flex items-center justify-between">
+                      Destination for Higher Studies
+                      <SortIcon />
+                    </p>
+                  </th>
+                  <th
+                    onClick={() => sorting("IeltsOrPte")}
+                    className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[200px]"
+                  >
+                    <p className="flex items-center justify-between">
                       Choice of IELTS or PTE
-                    </th>
-                    <th className=" border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[350px]">
+                      <SortIcon />
+                    </p>
+                  </th>
+                  <th
+                    onClick={() => sorting("School")}
+                    className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[350px]"
+                  >
+                    <p className="flex items-center justify-between">
                       School or college they last attended.
-                    </th>
-                    <th className=" border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]">
+                      <SortIcon />
+                    </p>
+                  </th>
+                  <th
+                    onClick={() => sorting("Age")}
+                    className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]"
+                  >
+                    <p className="flex items-center justify-between">
                       Age
-                    </th>
-                    <th className=" text-center border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[100px]">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-              </div>
-              <div className="overflow-y-auto">
+                      <SortIcon />
+                    </p>
+                  </th>
+                  <th className="text-center border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[100px]">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="overflow-y-auto">
                 {filteredStudents.map((value, index) => {
-                  const isLastRow = index === TableData.length - 1;
+                  const isLastRow = index === filteredStudents.length - 1;
                   // Calculate the percentages for each level
                   const levelPercentages = value.scores.map((score) =>
                     calculatePercentage(
@@ -294,16 +409,8 @@ const User = () => {
                       score.totalQuestions
                     )
                   );
-                  // const level2Percentage = calculatePercentage(
-                  //   value.scores[1].correctAnswers,
-                  //   value.scores[1].totalQuestions
-                  // );
-                  // const level3Percentage = calculatePercentage(
-                  //   value.scores[2].correctAnswers,
-                  //   value.scores[2].totalQuestions
-                  // );
                   return (
-                    <tr className="!w-full">
+                    <tr key={index} className="!w-full">
                       <td className="border  w-[99px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
                         {index + 1}
                       </td>
@@ -317,8 +424,7 @@ const User = () => {
                           </span>
                         ))}
                       </td>
-
-                      <td className="border w-[310px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
+                      <td className="border w-[313px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
                         {value.email}
                       </td>
                       <td className="border w-[220px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
@@ -333,18 +439,16 @@ const User = () => {
                       <td className="border w-[300px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
                         {value.coutryHigherStudies}
                       </td>
-                      <td
-                        className="border w-[200px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-center"
-                      >
+                      <td className="border w-[200px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-center">
                         {value.IeltsOrPte}
                       </td>
                       <td className="border w-[350px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
-                       {value.school}
+                        {value.School}
                       </td>
                       <td className="border w-[150px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
-                        24 Years
+                        {value.Age}
                       </td>
-                      <td className=" border w-[100px] relative border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base  text-[#808080] text-center">
+                      <td className="border w-[100px] relative border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base  text-[#808080] text-center">
                         <div className="relative">
                           <Menu>
                             <Menu.Button className="inline-flex justify-center w-full cursor-pointer">
@@ -397,7 +501,7 @@ const User = () => {
                     </tr>
                   );
                 })}
-              </div>
+              </tbody>
             </table>
           </div>
         </div>

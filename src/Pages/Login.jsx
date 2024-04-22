@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useUserAuth } from "../Components/Context/AuthContext";
+import Loader from "./Loader"
 export default function Login() {
+  
+  const [loading , setloading ] = useState(false)
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
@@ -11,15 +14,21 @@ export default function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
+    setloading(true)
     try {
       await loginUser(email, password);
       navigate("/");
+      setloading(false)
     } catch (error) {
+      setloading(false)
       setError(error.message);
       console.log(error.message);
     }
   }
-  return (
+  if (loading) {
+    return <Loader />
+  } else {
+    return (
     <>
       <div className="bg-login min-h-screen bg-no-repeat bg-cover flex relative ">
         <div className="flex justify-end items-center w-[412px] ">
@@ -33,7 +42,7 @@ export default function Login() {
               </p>
               <div className="flex flex-col  mt-10">
                 <input
-                  className="text-base font-normal  text-black py-3  outline-none border rounded-[10px] ps-3 border-[#B5B5B5]"
+                  className="text-base font-normal  text-black h-[50px]  outline-none border rounded-[10px] ps-3 border-[#B5B5B5]"
                   type="email"
                   placeholder="Enter your email"
                   required
@@ -42,7 +51,7 @@ export default function Login() {
               </div>
               <div className="flex flex-col mt-4">
                 <input
-                  className="text-base font-normal  text-black py-2  outline-none border rounded-[10px] ps-3 border-[#B5B5B5]"
+                  className="text-base font-normal  text-black h-[50px]  outline-none border rounded-[10px] ps-3 border-[#B5B5B5]"
                   type="password"
                   placeholder="Enter your password"
                   required
@@ -52,7 +61,7 @@ export default function Login() {
 
               <button
                 type="submit"
-                className="text-base font-normal bg-[#FF2000] py-3 px-4 rounded-[10px] mt-8 text-white w-full"
+                className="text-base font-normal bg-[#FF2000]  h-[50px]  px-4 rounded-[10px] mt-8 text-white w-full"
               >
                 Login
               </button>
@@ -61,5 +70,6 @@ export default function Login() {
         </div>
       </div>
     </>
-  );
+  )
+}
 }

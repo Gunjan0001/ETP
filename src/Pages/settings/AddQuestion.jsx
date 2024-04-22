@@ -59,7 +59,7 @@ const AddQuestion = ({ setShowPopups }) => {
         </div>
         <div className="flex justify-end">
           <button
-            // onClick={() => setShowPopups(true)}
+            onClick={() => setShowPopups(true)}
             className="ff_ubuntu text-[#ff2000] font-normal text-sm flex items-center rounded-[10px] outline-none border border-transparent level_add_btn"
           >
             <AddItemIcon />

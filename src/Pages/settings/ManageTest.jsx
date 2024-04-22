@@ -58,7 +58,7 @@
 //                   />
 //                   <Questions mapData={questionOption} />
 
-//                   <Questions mapData={questionOption} />
+//                   {/* <Questions mapData={questionOption} /> */}
 //                 </div>
 //               </div>
 //             ))}
@@ -67,15 +67,17 @@
 //       </div>
 //     </>
 //   );
-// };
+// }
 
 // export default ManageTest;
 import React from "react";
 
-export default function ManageTest() {
-  return (
-    <div className="p-10">
-      <h1 className="text-5xl text-center">Comimg Soon</h1>
-    </div>
-  );
-}
+const ManageTest = () => {
+  return   <div className="p-10">
+  <h1 className="text-5xl text-center">Comimg Soon</h1>
+</div>  
+};
+
+export default ManageTest;
+
+

@@ -20,11 +20,11 @@
 }
 
 .svg_stroke.active svg path {
-  stroke: white
+  stroke: white;
 }
 
 .svg_color.active {
-  background-color: #B63336;
+  background-color: #b63336;
 }
 
 .svg_color.active h2 {
@@ -32,7 +32,7 @@
 }
 
 .svg_stroke.active {
-  background-color: #B63336;
+  background-color: #b63336;
 }
 
 .svg_stroke.active h2 {
@@ -57,11 +57,11 @@
 }
 
 .project_data_active svg path {
-  fill: #B63336;
+  fill: #b63336;
 }
 
 .project_data_active h2 {
-  color: #B63336;
+  color: #b63336;
   background-color: transparent;
 }
 
@@ -70,7 +70,7 @@
 }
 
 .btn_green {
-  background-color: #04B92C;
+  background-color: #04b92c;
 }
 
 .btn_grey {
@@ -78,10 +78,8 @@
 }
 
 .btn_red {
-  background-color:
-    #B63336;
+  background-color: #b63336;
 }
-
 
 .svg-icon.hover svg path {
   fill: white !important;
@@ -89,24 +87,27 @@
 
 .ql-toolbar.ql-snow {
   border: transparent !important;
-
 }
 
 .ql-container.ql-snow {
   border: transparent !important;
 }
-.no-scroll{
+.no-scroll {
   overflow: hidden !important;
 }
-.bg_login{
+.bg_login {
   box-shadow: 0px 7px 10px 0px rgba(0, 0, 0, 0.1);
   border: 1px solid;
-  border-image-source: linear-gradient(143.55deg, rgba(255, 184, 0, 0.4) -2.64%, rgba(153, 0, 0, 0.4) 105.05%);
+  border-image-source: linear-gradient(
+    143.55deg,
+    rgba(255, 184, 0, 0.4) -2.64%,
+    rgba(153, 0, 0, 0.4) 105.05%
+  );
   background: rgba(255, 255, 255, 0.33);
 }
-.question_height{
+.question_height {
   height: calc(100vh - 230px) !important;
-}/* For Webkit (Chrome, Safari, etc.) */
+} /* For Webkit (Chrome, Safari, etc.) */
 ::-webkit-scrollbar {
   width: 3px; /* width of the scrollbar */
   height: 5px; /* height of the scrollbar */
@@ -119,6 +120,18 @@
 ::-webkit-scrollbar-thumb {
   background: rgba(219, 63, 63); /* color of the scrollbar */
 }
-.table_hight{
- height: calc(100vh - 180px);
+.table_hight {
+  height: calc(100vh - 180px);
+}
+.table_head,
+.table_body tr {
+  display: table !important;
+  width: 100% !important;
+  table-layout: fixed !important;
+}
+.table_body {
+  display: block !important;
+  height: calc(100vh - 265px) !important;
+  height: 100%;
+  overflow-y: auto !important;
 }
