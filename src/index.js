@@ -5,6 +5,7 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { UserAuthContextProvider } from './Components/Context/AuthContext';
 import { StudentgetterProvider } from './Components/Context/AllStudentsData'
+import { QuestiongetterProvider } from "./Components/Context/TestQuestions";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -12,7 +13,9 @@ root.render(
     <BrowserRouter>
       <UserAuthContextProvider>
               <StudentgetterProvider>
+                <QuestiongetterProvider>
                     <App />
+                    </QuestiongetterProvider>
               </StudentgetterProvider>
       </UserAuthContextProvider>
     </BrowserRouter>

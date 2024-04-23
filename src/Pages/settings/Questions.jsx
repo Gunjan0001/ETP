@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import AddQuestionnaire from "./AddQuestionnaire";
 import { DeleteIcon, EditIcon } from "../../Components/Icons";
+import AddQuestionnaire from "./AddQuestionnaire";
 
-const Questions = ({ mapData, }) => {
+const Questions = ({ mapData }) => {
   const [editingIndex, setEditingIndex] = useState(null);
   const [showAddQuestionnaire, setShowAddQuestionnaire] = useState(false);
   const handleEdit = (index) => {
@@ -10,6 +10,8 @@ const Questions = ({ mapData, }) => {
     setShowAddQuestionnaire(index);
     // You can add further logic here to handle editing
   };
+
+  // console.log("aasdf", mapData);
 
   const handleDelete = (index) => {
     // You can add logic here to delete the question
@@ -26,7 +28,7 @@ const Questions = ({ mapData, }) => {
   };
   return (
     <div>
-      {mapData.map((data, index) => {
+      {mapData && mapData.length > 0 && mapData.map((data, index) => {
         return (
           <div
             key={index}
@@ -34,7 +36,7 @@ const Questions = ({ mapData, }) => {
           >
             <div className="flex justify-between items-center ">
               <h2 className="font-normal text-base ff_ubuntu text-black uppercase">
-                q: {data.Q}
+                q: {data.question}
               </h2>
               <div className="flex items-center justify-center gap-2">
                 <span
@@ -52,12 +54,12 @@ const Questions = ({ mapData, }) => {
               </div>
             </div>
             <ul className="ps-5">
-              {data.ans.map((ops, index) => (
+              {data.answeroption.map((ops, index) => (
                 <li
                   key={index}
                   className="ff_ubuntu font-normal text-xsm text-black capitalize mt-1.5"
                 >
-                  {ops.option}
+                  {ops.optionNo} {ops.answertext}
                 </li>
               ))}
             </ul>

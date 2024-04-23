@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Level from "./Level";
 import { AddItemIcon, ResetIcon } from "../../Components/Icons";
+import Level from "./Level";
 
 const AddQuestion = ({ setShowPopups }) => {
   const [addQuestions, setAddQuestions] = useState(false);
