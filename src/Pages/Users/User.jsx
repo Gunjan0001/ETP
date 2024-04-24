@@ -217,7 +217,7 @@ const User = () => {
             <div className="flex items-center gap-[18px]">
               {/* Dropdown for search category */}
               <div className="flex items-center rounded-[10px] py-3 text-[#FF0000] bg-[#EFEFEF]">
-                <div className="relative">
+                <div className="relative z-[999]">
                   <button
                     onClick={() => setIsOpen(!isOpen)}
                     className="flex items-center gap-2 text-[#B63336] rounded-md focus:outline-none px-3"
@@ -241,7 +241,7 @@ const User = () => {
                     {searchCategory}
                   </button>
                   {isOpen && (
-                    <div className="absolute right-0 mt-2 w-[180px] origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <div className="absolute z-50 right-0 mt-2 w-[180px] origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div
                         className="py-1"
                         role="menu"
@@ -476,9 +476,9 @@ const User = () => {
                               </Menu.Item>
                               <Menu.Item>
                                 <Link
-                                  onClick={() => {
-                                    setShowpopup(true);
-                                  }}
+                                  // onClick={() => {
+                                  //   setShowpopup(true);
+                                  // }}
                                   className="flex items-center py-3 px-5 gap-4 cursor-pointer"
                                 >
                                   <NotInterestedIcon />

@@ -133,7 +133,7 @@
   position: sticky;
   top: -10px;
   background-color: red; /* Add your preferred background color */
-  z-index: 10; /* Ensure it stays on top of other elements */
+  z-index: 1; /* Ensure it stays on top of other elements */
   border: 1px solid black;
 }
 
