@@ -10,29 +10,29 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase";
 
 const ManageTest = () => {
-  const { QuestionsData, updateQuestionData,DeleteQuestionarie } = QuestiongetterContext();
+  const { QuestionsData, updateQuestionData, DeleteQuestionarie } =
+    QuestiongetterContext();
   const [showPopups, setShowPopups] = useState(false);
-  const [loading,setloading] = useState(false)
+  const [loading, setloading] = useState(false);
   // console.log(QuestionsData);
-  
+
   const deleteLevel = async (levelId) => {
     try {
-      setloading(true)
-      await deleteDoc(doc(db,'Test',levelId))
-      DeleteQuestionarie(levelId)
-      setloading(false)
+      setloading(true);
+      await deleteDoc(doc(db, "Test", levelId));
+      DeleteQuestionarie(levelId);
+      setloading(false);
     } catch (error) {
-      setloading(false)
-      console.log("Error in Delete Questionarie ",error)
+      setloading(false);
+      console.log("Error in Delete Questionarie ", error);
     }
   };
 
-
-  if(loading){
-    return (<Loader></Loader>)
+  if (loading) {
+    return <Loader></Loader>;
   }
   return (
-    <div className="px-[30px] py-5 bg-[#F8F9FA]">
+    <div className="px-[30px] py-5 bg-[#F8F9FA] ">
       <div className="flex justify-between items-center py-5">
         <h2 className="font-semibold text-lg ff_outfit text-black capitalize">
           Test List
@@ -44,32 +44,39 @@ const ManageTest = () => {
           <AddItemIcon /> Add New Questionnaire
         </button>
         {showPopups && (
-          <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center">
+          <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center z-40">
             <div
               onClick={() => setShowPopups(false)}
-              className="w-screen h-screen fixed top-0 left-0 bg-black/50"
+              className="w-screen h-screen fixed top-0 left-0 bg-black/50 "
             ></div>
 
-            <AddQuestionnaire hanleclosepopup={() => setShowPopups(false)}  setShowPopups={setShowPopups} />
+            <AddQuestionnaire
+              className="relative z-50"
+              hanleclosepopup={() => setShowPopups(false)}
+              setShowPopups={setShowPopups}
+            />
           </div>
         )}
       </div>
       <div className="overflow-auto">
         <div className="flex -mx-2 min-w-[1500px]">
-          {QuestionsData && QuestionsData.length > 0 &&  QuestionsData.map((level) => (
-            <div key={level.id} className="w-4/12 px-2">
-              <div className="bg-white p-5 rounded-[10px]">
-                <Level
-                  level={level.Level}
-                  title={level.LevelTitle}
-                  description = {level.instructionText}
-                  deleteLevel={() => deleteLevel(level.id)}
-                  LevelId={level.id}
-                />
-                <Questions mapData={level.questions} />
+          {QuestionsData &&
+            QuestionsData.length > 0 &&
+            QuestionsData.map((level) => (
+              <div key={level.id} className="w-4/12 px-2">
+                <div className="bg-white p-5 rounded-[10px] ">
+                  <Level
+                    className="fixed top-0  z-10"
+                    level={level.Level}
+                    title={level.LevelTitle}
+                    description={level.instructionText}
+                    deleteLevel={() => deleteLevel(level.id)}
+                    LevelId={level.id}
+                  />
+                  <Questions className="relative z-10" mapData={level.questions} />
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </div>

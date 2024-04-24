@@ -34,7 +34,7 @@ const Level = ({ level, addedQuestionCls, deleteLevel ,description,title,LevelId
             Add Question
           </button>
           {showPopups && (
-            <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center">
+            <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center z-50">
               <div
                 onClick={() => setShowPopups(false)}
                 className="w-screen h-screen fixed top-0 left-0 bg-black/50"

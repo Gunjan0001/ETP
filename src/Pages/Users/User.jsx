@@ -3,7 +3,9 @@ import {
   Arrow,
   Downarrow,
   FilterIcon,
+  NotInterestedIcon,
   SortIcon,
+  SuccedIcon,
   ThreeDotIcon,
 } from "../../Components/Icons";
 import {
@@ -21,6 +23,7 @@ import Navbar from "../../Components/Navbar";
 import { StudentgetterContext } from "../../Components/Context/AllStudentsData";
 import DeletePage from "../DeletePage";
 
+import ExcelJS from 'exceljs';
 const User = () => {
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [showpopup, setShowpopup] = useState(false);
@@ -31,6 +34,7 @@ const User = () => {
   // context
   // console.log(filteredStudents);
   const { studentsData, updateStudentData } = StudentgetterContext();
+ 
   useEffect(() => {
     const filteredData = studentsData.filter((student) => {
       const schoolname = student.School && student.School.toLowerCase();
@@ -61,73 +65,78 @@ const User = () => {
       document.body.classList.remove("no-scroll");
     }
   }, [showpopup]);
-  function convertArrayToCSV(array) {
-    const headers = [
-      "dateofadmission",
-      "refferncename",
-      "name",
-      "first_name",
-      "last_name",
-      "gender",
-      "branch",
-      "address_1",
-      "state",
-      "parent_phone",
-      "student_email",
-      "variant_name",
-      "course_duration",
-      "total_fee",
-      "last_payment_date",
-      "_createdAt",
-      "_updatedAt",
-      "certificate_no",
-      "issue_date",
-    ];
+  /*  *******************************
+    Export  Excel File start from here  
+  *********************************************   **/
+    const ExcelJS = require('exceljs');
 
-    const rows = array.map((obj) => {
-      return {
-        dateofadmission: obj.dateofadmission, // Update according to your data
-        refferncename: obj.refferncename,
-        name: obj.name,
-        first_name: obj.first_name,
-        last_name: obj.last_name,
-        gender: obj.gender,
-        branch: obj.branch,
-        address_1: obj.address_1,
-        state: obj.state,
-        parent_phone: obj.parent_phone,
-        student_email: obj.student_email,
-        variant_name: obj.variant_name,
-        course_duration: obj.course_duration,
-        total_fee: obj.total_fee,
-        last_payment_date: obj.last_payment_date,
-        _createdAt: obj._createdAt,
-        _updatedAt: obj._updatedAt,
-        certificate_no: obj.certificate_no,
-        issue_date: obj.issue_date,
+    function exportExcelFile() {
+      const workbook = new ExcelJS.Workbook();
+      const excelSheet = workbook.addWorksheet('Student List');
+      excelSheet.properties.defaultRowHeight = 20;
+    
+      excelSheet.getRow(1).font = {
+        name: 'Conic Sans MS',
+        family: 4,
+        size: 14,
+        bold: true,
       };
-    });
-
-    const headerRow = headers.join(",");
-    const dataRows = rows
-      .map((row) => headers.map((header) => row[header]).join(","))
-      .join("\n");
-
-    return `${headerRow}\n${dataRows}`;
-  }
-
-  function downloadCSV(array) {
-    const csv = convertArrayToCSV(array);
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "students.csv";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-  }
+      excelSheet.columns = [
+        { header: 'Sr.', key: 'Sr', width: 15 },
+        { header: 'Full Name', key: 'FullName', width: 30 },
+        { header: 'Test Score', key: 'TestScore', width: 30 },
+        { header: 'Email Address', key: 'EmailAddress', width: 30 },
+        { header: 'Phone Number', key: 'PhoneNumber', width: 20 },
+        { header: 'Alternate Phone Number', key: 'AlternatePhoneNumber', width: 20 },
+        { header: 'Hometown', key: 'Hometown', width: 30 },
+        { header: 'Destination for Higher Studies', key: 'DestinationHigherStudies', width: 30 },
+        { header: 'Choice of IELTS or PTE', key: 'IeltsOrPte', width: 20 },
+        { header: 'School or College', key: 'School', width: 30 },
+        { header: 'Age', key: 'Age', width: 15 },
+        { header: 'Status', key: 'Status', width: 15 },
+      ];
+    
+      filteredStudents.forEach((student, index) => {
+        const levelPercentages = student.scores.map((score) =>
+          calculatePercentage(score.correctAnswers, score.totalQuestions)
+        );
+    
+        excelSheet.addRow({
+          Sr: index + 1,
+          FullName: student.name,
+          TestScore: levelPercentages.join(', '),
+          EmailAddress: student.email,
+          PhoneNumber: student.phoneNumber,
+          AlternatePhoneNumber: student.alternatePhoneNumber,
+          Hometown: student.hometown,
+          DestinationHigherStudies: student.coutryHigherStudies,
+          IeltsOrPte: student.IeltsOrPte,
+          School: student.School,
+          Age: student.Age,
+          Status: 'New', // Assuming 'Status' is a fixed value
+        });
+      });
+    
+      workbook.xlsx.writeBuffer().then((data) => {
+        let blob = new Blob([data], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        });
+    
+        const url = window.URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = 'studentList.xlsx';
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+      });
+    }
+    
+  
+  
+    /*  *******************************
+    Export  Excel File end  here  
+  *********************************************   **/
+  
   // Function to calculate the percentage
   const calculatePercentage = (correctAnswers, totalQuestions) => {
     if (totalQuestions === 0) {
@@ -201,7 +210,7 @@ const User = () => {
             {/* Dropdown to select search category */}
             <div className="flex items-center gap-[18px]">
               {/* Dropdown for search category */}
-              <div className="flex items-center rounded-[10px] py-3 text-[#FF0000] bg-[#EFEFEF]">
+              {/* <div className="flex items-center rounded-[10px] py-3 text-[#FF0000] bg-[#EFEFEF]">
                 <div className="relative">
                   <button
                     onClick={() => setIsOpen(!isOpen)}
@@ -279,14 +288,14 @@ const User = () => {
                 <div className="cursor-pointer">
                   <SearchIcon />
                 </div>
-              </div>
+              </div> */}
               {/* Filter and Download Buttons */}
               <div className="ff-outfit text-base font-normal text-white ff_inter font-base bg-[#8C8C8C] py-3 gap-[10px] px-[15px] rounded-[10px] flex items-center">
                 <FilterIcon />
                 Filter
               </div>
               <button
-                onClick={() => downloadCSV(filteredStudents)}
+                onClick={exportExcelFile}
                 className="ff-outfit text-base font-normal text-white ff_inter font-base bg-[#8C8C8C] py-3 gap-[10px] px-[15px] rounded-[10px] flex items-center"
               >
                 <DownloadIcon />
@@ -297,8 +306,8 @@ const User = () => {
         </div>
         {/* Table Section */}
         <div className="py-5 px-8">
-          <div className="overflow-x-scroll table_hight">
-            <table className="table-auto w-[3000px]">
+          <div className="overflow-x-auto table_hight">
+            <table className="table-auto w-[3100px]">
               <thead>
                 <tr className="!w-full">
                   <th className="border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[99px]">
@@ -394,6 +403,15 @@ const User = () => {
                       <SortIcon />
                     </p>
                   </th>
+                  <th
+                    onClick={() => sorting("Status")}
+                    className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]"
+                  >
+                    <p className="flex items-center justify-between">
+                      Status
+                      <SortIcon />
+                    </p>
+                  </th>
                   <th className="text-center border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[100px]">
                     Action
                   </th>
@@ -448,6 +466,9 @@ const User = () => {
                       <td className="border w-[150px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
                         {value.Age}
                       </td>
+                      <td className="border w-[150px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
+                        New
+                      </td>
                       <td className="border w-[100px] relative border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base  text-[#808080] text-center">
                         <div className="relative">
                           <Menu>
@@ -465,7 +486,7 @@ const User = () => {
                                   className="flex items-center py-3 px-5 gap-4 cursor-pointer"
                                 >
                                   <ViewIcon />
-                                  <p className="ff_inter font-normal text-base mb-0 text-[#808080]">
+                                  <p className="ff_inter font-normal text-base mb-0 ">
                                     View Profile
                                   </p>
                                 </Link>
@@ -475,9 +496,9 @@ const User = () => {
                                   // to="/users/newuser"
                                   className="flex items-center py-3 px-5 gap-4 cursor-pointer"
                                 >
-                                  <EditIcon />
-                                  <p className="ff_inter font-normal text-base mb-0 text-[#808080]">
-                                    Edit Profile
+                                  <SuccedIcon />
+                                  <p className="ff_inter font-normal text-base mb-0 ">
+                                    Mark Succeed
                                   </p>
                                 </Link>
                               </Menu.Item>
@@ -488,9 +509,9 @@ const User = () => {
                                   }}
                                   className="flex items-center py-3 px-5 gap-4 cursor-pointer"
                                 >
-                                  <BinIcon />
-                                  <p className="ff_inter font-normal text-base mb-0 text-[#808080]">
-                                    Delete
+                                  <NotInterestedIcon />
+                                  <p className="ff_inter font-normal text-base mb-0 ">
+                                    Not Interested
                                   </p>
                                 </Link>
                               </Menu.Item>

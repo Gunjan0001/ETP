@@ -1,5 +1,5 @@
 import React from "react";
-import { PacmanLoader } from "react-spinners";
+import { CircleLoader, MoonLoader, PacmanLoader } from "react-spinners";
 import ScaleLoader from "react-spinners/ScaleLoader";
 
 const Loader = () => {
@@ -18,7 +18,7 @@ const Loader = () => {
         zIndex: 9999,
       }}
     >
-      <PacmanLoader
+      <MoonLoader
         color={"#e80707"}
         // loading={loading}
         height={200}

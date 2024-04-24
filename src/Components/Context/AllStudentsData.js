@@ -9,18 +9,22 @@ export const StudentgetterContext = () => {
 };
 
 export const StudentgetterProvider = ({ children }) => {
+  const [loading, setLoading] = useState(false);
   const [studentsData, setStudentsData] = useState([]);
   useEffect(() => {
     async function StudentData() {
+      setLoading(true);
       try {
         const snapshot = await getDocs(collection(db, "Users"));
         const StudentList = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
+        setLoading(false);
         setStudentsData(StudentList);
       } catch (error) {
         console.log("error in fetching students Data", error);
+        setLoading(false);
       }
     }
     StudentData();

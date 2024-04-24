@@ -70,7 +70,7 @@ const AddQuestionnaire = ({hanleclosepopup}) => {
 
 
   return (
-    <div className="bg-white p-5 rounded-[10px] flex flex-col gap-2.5 w-[490px] max-w-[490px] z-10">
+    <div className="bg-white p-5 rounded-[10px] flex flex-col gap-2.5 w-[490px] max-w-[490px] z-40">
       <h2 className="ff_ubuntu font-bold text-lg capitalize text-black">
         Add Questionnaire
       </h2>

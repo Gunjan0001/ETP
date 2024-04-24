@@ -8,23 +8,23 @@ import {
 import Level from "./Level";
 import { chooseOptionsData } from "../../Components/Helper";
 
-const AddQuestionsField = ({ setShowPopups,LevelId }) => {
-  console.log("asdfsdfasdfsdf",LevelId)
+const AddQuestionsField = ({ setShowPopups, LevelId }) => {
+  console.log("asdfsdfasdfsdf", LevelId);
   const [chooseAns, setChooseAns] = useState(null);
   const [addQuestions, setAddQuestions] = useState(false);
   const [answerOption, setAnswerOption] = useState([]);
-  const [answerText , setAnswerText] = useState('')
+  const [answerText, setAnswerText] = useState("");
   const getNextOptionLetter = () => {
     const lastOption = answerOption[answerOption.length - 1];
     if (!lastOption) {
-      return 'a'; // If no options, start with 'a'
+      return "a"; // If no options, start with 'a'
     }
     const lastOptionLetter = lastOption.optionNo;
     // Increment the last letter to get the next one
     return String.fromCharCode(lastOptionLetter.charCodeAt(0) + 1);
   };
 
-function HandleAddAnswerOption() {
+  function HandleAddAnswerOption() {
     const nextOptionLetter = getNextOptionLetter();
     setAnswerOption((prevVariants) => [
       ...prevVariants,
@@ -35,17 +35,17 @@ function HandleAddAnswerOption() {
       },
     ]);
     // Reset individual variant properties
-    setAnswerText('');
+    setAnswerText("");
   }
 
-  useEffect(() =>{
-    console.log("asdf",answerOption)
-  },[answerOption])
+  useEffect(() => {
+    console.log("asdf", answerOption);
+  }, [answerOption]);
 
   const [submitQuestion, setSubmitQuestions] = useState({
     title: "",
     des: "",
-  }); 
+  });
   function handleInputChange(e) {
     let name = e.target.name;
     let value = e.target.value;
@@ -58,8 +58,6 @@ function HandleAddAnswerOption() {
       des: "",
     });
   };
-
- 
 
   // Function to handle setting the correct option
   const handleSetCorrectOption = (index) => {
@@ -74,26 +72,8 @@ function HandleAddAnswerOption() {
     setChooseAns(index); // Set the chosen answer for styling (if needed)
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   return (
-    <div className="bg-white p-5 rounded-[10px] flex flex-col gap-2.5 w-[490px] max-w-[490px] z-10">
+    <div className="bg-white p-5 rounded-[10px] flex flex-col gap-2.5 w-[490px] max-w-[490px] relative z-50 ">
       <h2 className="ff_ubuntu font-bold text-lg capitalize text-black">
         Add Question
       </h2>
@@ -114,7 +94,7 @@ function HandleAddAnswerOption() {
             onChange={handleInputChange}
           />
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 ">
           <label htmlFor="des">Description (optional)</label>
           <textarea
             className="border-none outline-none p-2.5 text-black/50 bg-[#EEEEEE] text-base rounded-[10px] h-[44px] resize-none"
@@ -133,43 +113,45 @@ function HandleAddAnswerOption() {
             + Add Option
           </button>
         </div>
-          {
-            answerOption.map((optn,index) =>{
-              return (
-                <div className="border-t border-black/20 pt-5 mt-5 gap-2.5">
-          <label htmlFor="" className="flex flex-col gap-1">
-            <div className="flex justify-between items-center">
-              <h2 className="ff_ubuntu font-normal text-sm text-black capitalize ">
-               Option {optn.optionNo}
-              </h2>
-              <h2   onClick={() => handleSetCorrectOption(index)} className="ff_ubuntu font-normal text-sm text-black capitalize flex gap-1 group"
-              >
-                 Correct
-                {chooseAns === index ? (
-                    <ChooseOptionActiveIcon />
-                ) : (
-                  <ChooseOptionIcon />
-                )}
-              </h2>
+        <div className="max-h-[200px] overflow-y-scroll">
+        {answerOption.map((optn, index) => {
+          return (
+            <div className="border-t border-black/20 pt-5 mt-5 gap-2.5 ">
+              <label htmlFor="" className="flex flex-col gap-1">
+                <div className="flex justify-between items-center">
+                  <h2 className="ff_ubuntu font-normal text-sm text-black capitalize ">
+                    Option {optn.optionNo}
+                  </h2>
+                  <h2
+                    onClick={() => handleSetCorrectOption(index)}
+                    className="ff_ubuntu font-normal text-sm text-black capitalize flex gap-1 group"
+                  >
+                    Correct
+                    {chooseAns === index ? (
+                      <ChooseOptionActiveIcon />
+                    ) : (
+                      <ChooseOptionIcon />
+                    )}
+                  </h2>
+                </div>
+                <input
+                  type="text"
+                  className="border-none outline-none p-2.5 text-black/50 bg-[#EEEEEE] text-base rounded-[10px] h-[44px] resize-none w-full"
+                  value={optn.answerText}
+                  onChange={(e) =>
+                    setAnswerOption((prevVariants) =>
+                      prevVariants.map((v, i) =>
+                        i === index ? { ...v, answerText: e.target.value } : v
+                      )
+                    )
+                  }
+                />
+              </label>
             </div>
-            <input
-              type="text"
-              className="border-none outline-none p-2.5 text-black/50 bg-[#EEEEEE] text-base rounded-[10px] h-[44px] resize-none w-full"
-              value={optn.answerText}
-              onChange={(e) =>
-                setAnswerOption((prevVariants) =>
-                  prevVariants.map((v, i) =>
-                    i === index ? { ...v, answerText: e.target.value } : v
-                  )
-                )
-              }
-            />
-          </label>
+          );
+        })}
         </div>
-              )
-            })
-          }
-        <div className="flex justify-end gap-2 border-t border-black/20 pt-5 mt-5">
+        <div className="flex justify-end gap-2 border-t border-black/20 pt-5 mt-5 ">
           <button className="ff_outfit bg-[#8C8C8C] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 ">
             <ResetIcon /> Reset
           </button>

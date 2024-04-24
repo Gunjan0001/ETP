@@ -844,3 +844,21 @@ export const SortIcon = () => {
 
   );
 };
+export const NotInterestedIcon = () => {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.58 20 4 16.42 4 12C4 10.15 4.63 8.45 5.69 7.1L16.9 18.31C15.5031 19.4082 13.7769 20.0036 12 20ZM18.31 16.9L7.1 5.69C8.49686 4.59177 10.2231 3.99639 12 4C16.42 4 20 7.58 20 12C20 13.85 19.37 15.55 18.31 16.9Z" fill="#FF0000"/>
+</svg>
+
+
+  );
+};
+export const SuccedIcon = () => {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2L14.6265 3.916L17.878 3.91L18.8765 7.004L21.5105 8.91L20.5 12L21.5105 15.09L18.8765 16.996L17.878 20.09L14.6265 20.084L12 22L9.3735 20.084L6.122 20.09L5.1235 16.996L2.4895 15.09L3.5 12L2.4895 8.91L5.1235 7.004L6.122 3.91L9.3735 3.916L12 2Z" stroke="#00C11F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8.5 12L11 14.5L16 9.5" stroke="#00C11F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    
+  );
+};

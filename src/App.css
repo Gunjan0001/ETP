@@ -123,15 +123,21 @@
 .table_hight {
   height: calc(100vh - 180px);
 }
-.table_head,
-.table_body tr {
-  display: table !important;
-  width: 100% !important;
-  table-layout: fixed !important;
+.table_hight {
+  max-height: calc(100vh - 150px);; /* Add a maximum height to enable vertical scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
 }
-.table_body {
-  display: block !important;
-  height: calc(100vh - 265px) !important;
-  height: 100%;
-  overflow-y: auto !important;
+
+/* Make the table header sticky */
+.table-auto thead {
+  position: sticky;
+  top: -10px;
+  background-color: red; /* Add your preferred background color */
+  z-index: 10; /* Ensure it stays on top of other elements */
+  border: 1px solid black;
 }
+
+.Question_height{
+  height: calc(100vh - 320px) !important;
+}
+

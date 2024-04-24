@@ -27,7 +27,7 @@ const Questions = ({ mapData }) => {
     setEditingIndex(null);
   };
   return (
-    <div>
+    <div className="overflow-y-scroll Question_height relative z-10">
       {mapData && mapData.length > 0 && mapData.map((data, index) => {
         return (
           <div
