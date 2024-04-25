@@ -1,6 +1,6 @@
-import React from "react";
-import { Message, UserSign } from "./Icons";
-import profile from "../assets/images/svg/profile.svg";
+import React from 'react';
+import { Message, UserSign } from './Icons';
+import profile from '../assets/images/svg/profile.svg';
 const Navbar = (props) => {
   return (
     <>
@@ -8,12 +8,10 @@ const Navbar = (props) => {
         <div className="flex items-center">
           <div className="flex items-center justify-between w-full ">
             <div>
-              <h2 className="ff_inter font-semibold text-xl mb-0">
-                {props.navbarData}
-              </h2>
+              <h2 className="ff_inter font-semibold text-xl mb-0">{props.navbarData}</h2>
             </div>
-            <p className="flex items-center gap-5 text-[#04B92C]">
-              {props.data}
+            <p className="text-[#04B92C]">
+              <span className="text-[#00000080]"> {props.startData}</span> {props.data}
             </p>
           </div>
         </div>
