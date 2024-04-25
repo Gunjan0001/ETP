@@ -11,7 +11,7 @@ const Loader = () => {
         left: 0,
         width: "100vw",
         height: "100vh",
-        backgroundColor: "rgba(0, 0, 0, 0.7)",
+        backgroundColor: "#fff",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -20,7 +20,6 @@ const Loader = () => {
     >
       <MoonLoader
         color={"#e80707"}
-        // loading={loading}
         height={200}
         width={15}
         aria-label="Loading Spinner"

@@ -8,6 +8,7 @@ import { QuestiongetterContext } from "../../Components/Context/TestQuestions";
 import Loader from "../Loader";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase";
+import Navbar from "../../Components/Navbar";
 
 const ManageTest = () => {
   const { QuestionsData, updateQuestionData, DeleteQuestionarie } =
@@ -32,7 +33,9 @@ const ManageTest = () => {
     return <Loader></Loader>;
   }
   return (
-    <div className="px-[30px] py-5 bg-[#F8F9FA] ">
+    <>
+    <Navbar navbarData="Manage Test" data="Settings / Questions"/>
+    <div className="px-[30px] py-5 bg-[#F8F9FA] mt-20">
       <div className="flex justify-between items-center py-5">
         <h2 className="font-semibold text-lg ff_outfit text-black capitalize">
           Test List
@@ -80,6 +83,7 @@ const ManageTest = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
