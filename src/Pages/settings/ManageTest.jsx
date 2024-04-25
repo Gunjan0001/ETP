@@ -34,7 +34,7 @@ const ManageTest = () => {
   }
   return (
     <>
-    <Navbar navbarData="Manage Test" data="Settings / Questions"/>
+    <Navbar navbarData="Manage Test" startData="Settings / " data="Questions"/>
     <div className="px-[30px] py-5 bg-[#F8F9FA] mt-20">
       <div className="flex justify-between items-center py-5">
         <h2 className="font-semibold text-lg ff_outfit text-black capitalize">
