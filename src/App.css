@@ -1,18 +1,22 @@
-@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+* {
+  font-family: 'Inter', sans-serif !important;
+}
+
 .ff_inter {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .ff-outfit {
-  font-family: "Outfit", sans-serif;
+  font-family: 'Outfit', sans-serif;
 }
 
 .ff_great_vibes {
-  font-family: "Great Vibes", cursive;
+  font-family: 'Great Vibes', cursive;
 }
 
 .svg_color.active svg path {
@@ -124,7 +128,7 @@
   height: calc(100vh - 180px);
 }
 .table_hight {
-  max-height: calc(100vh - 150px);; /* Add a maximum height to enable vertical scrolling */
+  max-height: calc(100vh - 150px); /* Add a maximum height to enable vertical scrolling */
   overflow-y: auto; /* Enable vertical scrolling */
 }
 
@@ -137,7 +141,6 @@
   border: 1px solid black;
 }
 
-.Question_height{
+.Question_height {
   height: calc(100vh - 320px) !important;
 }
-

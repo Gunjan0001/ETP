@@ -1,26 +1,27 @@
-import "./App.css";
-import { Route, Routes } from "react-router-dom";
-import MainLayout from "./Components/Layout/MainLayout";
-import DashBoard from "./Pages/DashBoard/DashBoard";
-import Login from "./Pages/Login";
-import Protected from "./Components/Protected";
-import UserForm from "./Pages/settings/UserForm";
+import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import MainLayout from './Components/Layout/MainLayout';
+import DashBoard from './Pages/DashBoard/DashBoard';
+import Login from './Pages/Login';
+import Protected from './Components/Protected';
+import UserForm from './Pages/settings/UserForm';
 // import Questions from "./Pages/settings/Questions";
-import User from "./Pages/Users/User";
-import ManageTest from "./Pages/settings/ManageTest";
-import { useEffect, useState } from "react";
+import User from './Pages/Users/User';
+import ManageTest from './Pages/settings/ManageTest';
+import { useEffect, useState } from 'react';
 // import Test from "./Pages/settings/Test";
-import Loader from "./Pages/Loader";
-import notfound from "./assets/images/png/notfound.png";
+import Loader from './Pages/Loader';
+import notfound from './assets/images/png/notfound.png';
+import UserDetails from './Pages/Users/UserDetails';
 function App() {
   const [loading, setloading] = useState(true);
   useEffect(() => {
-    window.addEventListener("load", () => {
+    window.addEventListener('load', () => {
       setloading(false); // Set loading to false when the page has finished loading
     });
 
     return () => {
-      window.removeEventListener("load", () => {
+      window.removeEventListener('load', () => {
         setloading(false);
       });
     };
@@ -38,11 +39,11 @@ function App() {
                   <Protected>
                     <MainLayout />
                   </Protected>
-                }
-              >
+                }>
                 <Route index element={<DashBoard />}></Route>
                 {/* User route */}
                 <Route path="users" element={<User />}></Route>
+                <Route path="userprofile/:id" element={<UserDetails />} />
 
                 {/* Projects route */}
                 <Route path="settings">
@@ -61,9 +62,7 @@ function App() {
           <h2 className="font-medium text-[32px] text-[#FF0000] text-center mt-5">
             Page Not Found!
           </h2>
-          <p className="mb-0 ">
-            This web-page is not available for mobile screens.
-          </p>
+          <p className="mb-0 ">This web-page is not available for mobile screens.</p>
         </div>
       </div>
     </>
