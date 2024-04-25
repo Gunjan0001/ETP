@@ -47,8 +47,8 @@ function App() {
 
                 {/* Projects route */}
                 <Route path="settings">
-                  <Route index element={<UserForm />} />
-                  <Route path="Questions" element={<ManageTest />}></Route>
+                  {/* <Route index element={<UserForm />} /> */}
+                  <Route index element={<ManageTest />}></Route>
                   {/* <Route path="Questions" element={<Test />}></Route> */}
                 </Route>
               </Route>

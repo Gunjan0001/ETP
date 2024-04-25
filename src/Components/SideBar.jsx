@@ -82,7 +82,7 @@ const SideBar = () => {
           </NavLink>
           {projectDropdown === 'settings' && (
             <ul>
-              <NavLink
+              {/* <NavLink
                 to="settings"
                 end
                 className={({ isActive }) =>
@@ -92,7 +92,7 @@ const SideBar = () => {
                 }>
                 <h2 className="pl-3 font-normal ff_inter text-lg">User Form</h2>
                 <Arrow />
-              </NavLink>
+              </NavLink> */}
               <NavLink
                 to="settings/questions"
                 className={({ isActive }) =>
