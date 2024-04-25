@@ -442,16 +442,12 @@ const User = () => {
                               </Menu.Button>
                               <Menu.Items
                                 className={`absolute right-10 z-20 -top-[20px] mt-2 w-56 origin-top-right max-w-48 rounded-lg border border-solid bg-white border-[#D9D9D9]${
-                                  isLastRow
-                                    ? "transform translate-y-[-70%]"
-                                    : ""
-                                }`}
-                              >
+                                  isLastRow ? 'transform translate-y-[-70%]' : ''
+                                }`}>
                                 <Menu.Item>
                                   <Link
-                                    // to={`/users/veiwprofile/${value.id}`}
-                                    className="flex items-center py-3 px-5 gap-4 cursor-pointer"
-                                  >
+                                    to={`/userprofile/${value.id}`}
+                                    className="flex items-center py-3 px-5 gap-4 cursor-pointer">
                                     <ViewIcon />
                                     <p className="ff_inter font-normal text-base mb-0 ">
                                       View Profile
@@ -460,14 +456,8 @@ const User = () => {
                                 </Menu.Item>
                                 <Menu.Item>
                                   <Link
-                                    onClick={() =>
-                                      handleUpdateStatus(
-                                        value.id,
-                                        " Mark Succeed"
-                                      )
-                                    }
-                                    className="flex items-center py-3 px-5 gap-4 cursor-pointer"
-                                  >
+                                    onClick={() => handleUpdateStatus(value.id, ' Mark Succeed')}
+                                    className="flex items-center py-3 px-5 gap-4 cursor-pointer">
                                     <SuccedIcon />
                                     <p className="ff_inter font-normal text-base mb-0 ">
                                       Mark Succeed
@@ -476,14 +466,8 @@ const User = () => {
                                 </Menu.Item>
                                 <Menu.Item>
                                   <Link
-                                    onClick={() =>
-                                      handleUpdateStatus(
-                                        value.id,
-                                        "Not Interested"
-                                      )
-                                    }
-                                    className="flex items-center py-3 px-5 gap-4 cursor-pointer"
-                                  >
+                                    onClick={() => handleUpdateStatus(value.id, 'Not Interested')}
+                                    className="flex items-center py-3 px-5 gap-4 cursor-pointer">
                                     <NotInterestedIcon />
                                     <p className="ff_inter font-normal text-base mb-0 ">
                                       Not Interested
