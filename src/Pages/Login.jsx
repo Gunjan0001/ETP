@@ -1,34 +1,38 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useUserAuth } from "../Components/Context/AuthContext";
-import Loader from "./Loader"
+import Loader from "./Loader";
+import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi"; // Assuming you're using react-icons library for icons
+
 export default function Login() {
-  
-  const [loading , setloading ] = useState(false)
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [error, setError] = React.useState("");
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State to track password visibility
   const { loginUser } = useUserAuth();
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
-    setloading(true)
+    setLoading(true);
     try {
       await loginUser(email, password);
       navigate("/");
-      setloading(false)
+      setLoading(false);
     } catch (error) {
-      setloading(false)
+      setLoading(false);
       setError(error.message);
       console.log(error.message);
     }
   }
-  if (loading) {
-    return <Loader />
-  } else {
-    return (
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword); // Toggle the state to show/hide password
+  };
+
+  return (
     <>
       <div className="bg-login min-h-screen bg-no-repeat bg-cover flex relative ">
         <div className="flex justify-end items-center w-[412px] ">
@@ -49,14 +53,21 @@ export default function Login() {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              <div className="flex flex-col mt-4">
+              <div className="flex flex-col mt-4 relative">
                 <input
                   className="text-base font-normal  text-black h-[50px]  outline-none border rounded-[10px] ps-3 border-[#B5B5B5]"
-                  type="password"
+                  type={showPassword ? "text" : "password"} // Show password if showPassword is true
                   placeholder="Enter your password"
                   required
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                <span
+                  className="absolute top-1/2 transform -translate-y-1/2 right-3 cursor-pointer"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <HiOutlineEyeOff /> : <HiOutlineEye />} 
+                </span>
               </div>
 
               <button
@@ -70,6 +81,5 @@ export default function Login() {
         </div>
       </div>
     </>
-  )
-}
+  );
 }

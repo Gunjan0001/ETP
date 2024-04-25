@@ -75,13 +75,14 @@ const SideBar = () => {
           <NavLink
             onClick={() => handeldropdown("settings")}
             to="settings"
-            className=" flex items-center svg_color justify-between p-[10px] mt-2 text-xs ms-4 rounded-l-[50px] ease-out transition-all duration-300"
+            className="flex items-center justify-between p-[10px] svg_stroke mt-2 text-xs  ms-4 rounded-l-[50px] ease-out transition-all duration-300  fill-current ! hover:fill-white"
+            
           >
             <div className="flex items-center  ">
               <Settings />
               <h2 className="pl-3 font-normal ff_inter text-lg">Settings</h2>
             </div>
-            <div className="tranform rotate-90">
+            <div className="tranform rotate-90 svg_color">
               <Arrow />
             </div>
           </NavLink>

@@ -21,7 +21,6 @@ export const QuestiongetterProvider = ({ children }) => {
       }
     }
     QuestionData();
-    console.log(QuestionsData);
   }, []);
   const updateQuestionData = (updatedData) => {
     console.log("updates working", updatedData);

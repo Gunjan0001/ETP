@@ -19,25 +19,54 @@ import {
 import { Link } from "react-router-dom";
 import { TableData } from "../../Components/Helper";
 import { Menu } from "@headlessui/react";
-import Loader from "../../Pages/Loader"
+import Loader from "../../Pages/Loader";
 import Navbar from "../../Components/Navbar";
 import { StudentgetterContext } from "../../Components/Context/AllStudentsData";
 import DeletePage from "../DeletePage";
+
+const LeadStatus = {
+  NEW: "NEW",
+  SUCCEED: "SUCCEED",
+  NOT_INTERESTED: "NOT INTERESTED",
+};
+
 const User = () => {
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [showpopup, setShowpopup] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenall, setIsOpenall] = useState(false);
   const [searchCategory, setSearchCategory] = useState("School Name");
+
   const [order, setorder] = useState("ASC");
   const [loading, setLoading] = useState(true);
   // context
   // console.log(filteredStudents);
   const { studentsData, updateStudentData, updateStatusonFirebase } =
     StudentgetterContext();
+  // console.log(studentsData, "gunjan");
+  const [iletsorpte, setIletsorpte] = useState(() => {
+    if (studentsData.length > 0) {
+      return "All";
+    } else {
+      return "";
+    }
+  });
   const handleUpdateStatus = (studentId, newStatus) => {
     updateStatusonFirebase(studentId, newStatus);
   };
+  function getStatusColor(status) {
+    switch (status) {
+      case LeadStatus.NEW:
+        return "#000000"; // Black color for NEW status
+      case LeadStatus.SUCCEED:
+        return "#008000"; // Green color for SUCCEED status
+      case LeadStatus.NOT_INTERESTED:
+        return "#FFA500"; // Orange color for NOT_INTERESTED status
+      default:
+        return "#000000"; // Default color
+    }
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -220,13 +249,93 @@ const User = () => {
                 {`Total ${filteredStudents.length} students`}
               </p>
             </div>
-            {/* Dropdown to select search category */}
+
             <div className="flex items-center gap-[18px]">
+              {/* Dropdown to select iletsorpte */}
+              <div className="flex items-center rounded-[10px] py-3 text-[#FF0000] bg-[#EFEFEF]">
+  <div className="relative z-[999]">
+    <button
+      onClick={() => {
+        setIsOpenall(!isOpenall);
+        setIsOpen(false);
+      }}
+      className="flex items-center gap-2 text-[#B63336] rounded-md focus:outline-none px-3"
+    >
+      <svg
+        className={`w-4 h-4xx transition-transform transform ${
+          isOpenall ? "rotate-180" : ""
+        }`}
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="#000000"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={3}
+          d="M19 9l-7 7-7-7"
+        />
+      </svg>
+      {iletsorpte}
+    </button>
+    {isOpenall && (
+      <div className="absolute z-50 right-0 mt-2 w-[180px] origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <div
+          className="py-1"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="options-menu"
+        >
+          <button
+            onClick={() => {
+              setIsOpenall(false);
+              setIsOpen(false);
+              const firstStudentIeltsOrPte =
+                studentsData.length > 0 ? "All" : "";
+              setIletsorpte(firstStudentIeltsOrPte);
+            }}
+            className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            role="menuitem"
+          >
+            All
+          </button>
+          <button
+            onClick={() => {
+              setIsOpenall(false);
+              setIsOpen(false);
+              setIletsorpte("ILETS");
+            }}
+            className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            role="menuitem"
+          >
+            ILETS
+          </button>
+          <button
+            onClick={() => {
+              setIsOpenall(false);
+              setIsOpen(false);
+              setIletsorpte("PTE");
+            }}
+            className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            role="menuitem"
+          >
+            PTE
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
+
               {/* Dropdown for search category */}
               <div className="flex items-center rounded-[10px] py-3 text-[#FF0000] bg-[#EFEFEF]">
                 <div className="relative z-[999]">
                   <button
-                    onClick={() => setIsOpen(!isOpen)}
+                    onClick={() => {
+                      setIsOpen(!isOpen);
+                      setIsOpenall(false);
+                    }}
                     className="flex items-center gap-2 text-[#B63336] rounded-md focus:outline-none px-3"
                   >
                     <svg
@@ -258,6 +367,7 @@ const User = () => {
                         <button
                           onClick={() => {
                             setIsOpen(false);
+                            setIsOpenall(false);
                             setSearchCategory("School Name");
                           }}
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -268,6 +378,7 @@ const User = () => {
                         <button
                           onClick={() => {
                             setIsOpen(false);
+                            setIsOpenall(false);
                             setSearchCategory("hometown");
                           }}
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -278,6 +389,7 @@ const User = () => {
                         <button
                           onClick={() => {
                             setIsOpen(false);
+                            setIsOpenall(false);
                             setSearchCategory("Country Destination");
                           }}
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -302,11 +414,6 @@ const User = () => {
                   <SearchIcon />
                 </div>
               </div>
-              {/* Filter and Download Buttons */}
-              {/* <div className="ff-outfit text-base font-normal text-white ff_inter font-base bg-[#8C8C8C] py-3 gap-[10px] px-[15px] rounded-[10px] flex items-center">
-                <FilterIcon />
-                Filter
-              </div> */}
               <button
                 onClick={exportExcelFile}
                 className="ff-outfit text-base font-normal text-white ff_inter font-base bg-[#8C8C8C] py-3 gap-[10px] px-[15px] rounded-[10px] flex items-center"
@@ -385,13 +492,9 @@ const User = () => {
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]">
                       <p className="flex items-center justify-between">Age</p>
                     </th>
-                    <th
-                      // onClick={() => sorting("Status")}
-                      className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]"
-                    >
+                    <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]">
                       <p className="flex items-center justify-between">
                         Status
-                        {/* <SortIcon /> */}
                       </p>
                     </th>
                     <th className="text-center border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[100px]">
@@ -440,17 +543,24 @@ const User = () => {
                           {value.coutryHigherStudies}
                         </td>
                         <td className="border w-[200px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-center">
-                          {value.IeltsOrPte}
-                        </td>
+  {isOpenall && iletsorpte === "All"
+    ? value.IeltsOrPte
+    : iletsorpte}
+</td>
+
                         <td className="border w-[350px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
                           {value.School}
                         </td>
                         <td className="border w-[150px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
                           {value.Age}
                         </td>
-                        <td className="border w-[150px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
-                          {value.status}
+                        <td
+                          className="border w-[150px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-center"
+                          style={{ color: getStatusColor(value.status) }}
+                        >
+                          {value.status || LeadStatus.NEW}
                         </td>
+
                         <td className="border w-[100px] relative border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base  text-[#808080] text-center">
                           <div className="relative">
                             <Menu>
@@ -480,7 +590,7 @@ const User = () => {
                                     onClick={() =>
                                       handleUpdateStatus(
                                         value.id,
-                                        " Mark Succeed"
+                                        LeadStatus.SUCCEED
                                       )
                                     }
                                     className="flex items-center py-3 px-5 gap-4 cursor-pointer"
@@ -496,7 +606,7 @@ const User = () => {
                                     onClick={() =>
                                       handleUpdateStatus(
                                         value.id,
-                                        "Not Interested"
+                                        LeadStatus.NOT_INTERESTED
                                       )
                                     }
                                     className="flex items-center py-3 px-5 gap-4 cursor-pointer"

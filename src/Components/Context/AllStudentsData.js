@@ -9,9 +9,11 @@ import {
 import { db } from "../../firebase";
 
 const AllStudentGetterContext = createContext();
+
 export const StudentgetterContext = () => {
   return useContext(AllStudentGetterContext);
 };
+
 export const StudentgetterProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [studentsData, setStudentsData] = useState([]);
@@ -64,6 +66,12 @@ export const StudentgetterProvider = ({ children }) => {
     try {
       const ref = doc(db, "Users", docID);
       await updateDoc(ref, { status: status });
+      // Update the status in the local state immediately after the Firestore update
+      setStudentsData((prevData) =>
+        prevData.map((student) =>
+          student.id === docID ? { ...student, status: status } : student
+        )
+      );
     } catch (error) {
       console.log("Error updating status:", error);
     } finally {
@@ -73,7 +81,12 @@ export const StudentgetterProvider = ({ children }) => {
 
   return (
     <AllStudentGetterContext.Provider
-      value={{ studentsData, updateStudentData, updateStatusonFirebase, loading }}
+      value={{
+        studentsData,
+        updateStudentData,
+        updateStatusonFirebase,
+        loading,
+      }}
     >
       {children}
     </AllStudentGetterContext.Provider>
