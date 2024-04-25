@@ -19,11 +19,10 @@ import {
 import { Link } from "react-router-dom";
 import { TableData } from "../../Components/Helper";
 import { Menu } from "@headlessui/react";
+import Loader from "../../Pages/Loader"
 import Navbar from "../../Components/Navbar";
 import { StudentgetterContext } from "../../Components/Context/AllStudentsData";
 import DeletePage from "../DeletePage";
-
-import ExcelJS from "exceljs";
 const User = () => {
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [showpopup, setShowpopup] = useState(false);
@@ -31,11 +30,17 @@ const User = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchCategory, setSearchCategory] = useState("School Name");
   const [order, setorder] = useState("ASC");
+  const [loading, setLoading] = useState(true);
   // context
   // console.log(filteredStudents);
-  const { studentsData, updateStudentData } = StudentgetterContext();
+  const { studentsData, updateStudentData, updateStatusonFirebase } =
+    StudentgetterContext();
+  const handleUpdateStatus = (studentId, newStatus) => {
+    updateStatusonFirebase(studentId, newStatus);
+  };
 
   useEffect(() => {
+    setLoading(true);
     const filteredData = studentsData.filter((student) => {
       const schoolname = student.School && student.School.toLowerCase();
       const hometown = student.hometown && student.hometown.toLowerCase();
@@ -56,6 +61,7 @@ const User = () => {
       }
     });
     setFilteredStudents(filteredData);
+    setLoading(false);
   }, [studentsData, searchValue, searchCategory]);
 
   useEffect(() => {
@@ -200,7 +206,8 @@ const User = () => {
   };
   return (
     <>
-      <div className="mt-10">
+      <Navbar navbarData="Manage Leads" data="Leads / Manage Leads" />
+      <div className="mt-24">
         <div className="py-5 px-8 relative z-10">
           {/* Search and Filter Section */}
           <div className="flex items-center justify-between">
@@ -312,191 +319,205 @@ const User = () => {
         </div>
         {/* Table Section */}
         <div className="py-5 px-8">
-          <div className="overflow-x-auto table_hight">
-            <table className="table-auto w-[3100px]">
-              <thead>
-                <tr className="!w-full">
-                  <th className="border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[99px]">
-                    <p className="flex items-center justify-between">Sr.</p>
-                  </th>
-                  <th
-                    onClick={() => sorting("name")}
-                    className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[310px]"
-                  >
-                    <p className="flex items-center justify-between">
-                      Full Name
-                      <SortIcon />
-                    </p>
-                  </th>
-                  <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[480px]">
-                    <p className="flex items-center justify-between">
-                      Test Score
-                    </p>
-                  </th>
-                  <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[313px]">
-                    <p className="flex items-center justify-between">
-                      Email Address
-                    </p>
-                  </th>
-                  <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[220px]">
-                    <p className="flex items-center justify-between">
-                      Phone Number
-                    </p>
-                  </th>
-                  <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[220px]">
-                    <p className="flex items-center justify-between">
-                      Alternate Phone Number
-                    </p>
-                  </th>
-                  <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[300px]">
-                    <p className="flex items-center justify-between">
-                      Hometown
-                    </p>
-                  </th>
-                  <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[300px]">
-                    <p className="flex items-center justify-between">
-                      Destination for Higher Studies
-                    </p>
-                  </th>
-                  <th
-                    onClick={() => sorting("IeltsOrPte")}
-                    className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[200px]"
-                  >
-                    <p className="flex items-center justify-between">
-                      Choice of IELTS or PTE
-                      <SortIcon />
-                    </p>
-                  </th>
-                  <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[350px]">
-                    <p className="flex items-center justify-between">
-                      School or college they last attended.
-                    </p>
-                  </th>
-                  <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]">
-                    <p className="flex items-center justify-between">Age</p>
-                  </th>
-                  <th
-                    // onClick={() => sorting("Status")}
-                    className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]"
-                  >
-                    <p className="flex items-center justify-between">
-                      Status
-                      {/* <SortIcon /> */}
-                    </p>
-                  </th>
-                  <th className="text-center border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[100px]">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="overflow-y-auto">
-                {filteredStudents.map((value, index) => {
-                  const isLastRow = index === filteredStudents.length - 1;
-                  // Calculate the percentages for each level
-                  const levelPercentages = value.scores.map((score) =>
-                    calculatePercentage(
-                      score.correctAnswers,
-                      score.totalQuestions
-                    )
-                  );
-                  return (
-                    <tr key={index} className="!w-full">
-                      <td className="border  w-[99px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
-                        {index + 1}
-                      </td>
-                      <td className="border w-[310px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
-                        {value.name}
-                      </td>
-                      <td className="border w-[480px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080]">
-                        {levelPercentages.map((percentage, levelIndex) => (
-                          <span key={levelIndex} className="me-5">
-                            Level {levelIndex + 1}: {percentage}%
-                          </span>
-                        ))}
-                      </td>
-                      <td className="border w-[313px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
-                        {value.email}
-                      </td>
-                      <td className="border w-[220px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
-                        {value.phoneNumber}
-                      </td>
-                      <td className="border w-[220px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
-                        {value.alternatePhoneNumber}
-                      </td>
-                      <td className="border w-[300px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
-                        {value.hometown}
-                      </td>
-                      <td className="border w-[300px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
-                        {value.coutryHigherStudies}
-                      </td>
-                      <td className="border w-[200px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-center">
-                        {value.IeltsOrPte}
-                      </td>
-                      <td className="border w-[350px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
-                        {value.School}
-                      </td>
-                      <td className="border w-[150px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
-                        {value.Age}
-                      </td>
-                      <td className="border w-[150px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
-                        New
-                      </td>
-                      <td className="border w-[100px] relative border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base  text-[#808080] text-center">
-                        <div className="relative">
-                          <Menu>
-                            <Menu.Button className="inline-flex justify-center w-full cursor-pointer">
-                              <ThreeDotIcon />
-                            </Menu.Button>
-                            <Menu.Items
-                              className={`absolute right-10 z-20 -top-[20px] mt-2 w-56 origin-top-right max-w-48 rounded-lg border border-solid bg-white border-[#D9D9D9]${
-                                isLastRow ? "transform translate-y-[-70%]" : ""
-                              }`}
-                            >
-                              <Menu.Item>
-                                <Link
-                                  // to={`/users/veiwprofile/${value.id}`}
-                                  className="flex items-center py-3 px-5 gap-4 cursor-pointer"
-                                >
-                                  <ViewIcon />
-                                  <p className="ff_inter font-normal text-base mb-0 ">
-                                    View Profile
-                                  </p>
-                                </Link>
-                              </Menu.Item>
-                              <Menu.Item disabled>
-                                <Link
-                                  // to="/users/newuser"
-                                  className="flex items-center py-3 px-5 gap-4 cursor-pointer"
-                                >
-                                  <SuccedIcon />
-                                  <p className="ff_inter font-normal text-base mb-0 ">
-                                    Mark Succeed
-                                  </p>
-                                </Link>
-                              </Menu.Item>
-                              <Menu.Item>
-                                <Link
-                                  // onClick={() => {
-                                  //   setShowpopup(true);
-                                  // }}
-                                  className="flex items-center py-3 px-5 gap-4 cursor-pointer"
-                                >
-                                  <NotInterestedIcon />
-                                  <p className="ff_inter font-normal text-base mb-0 ">
-                                    Not Interested
-                                  </p>
-                                </Link>
-                              </Menu.Item>
-                            </Menu.Items>
-                          </Menu>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+          {loading ? ( // Conditional rendering based on loading state
+            <Loader />
+          ) : (
+            <div className="overflow-x-auto table_hight">
+              <table className="table-auto w-[3100px]">
+                <thead>
+                  <tr className="!w-full">
+                    <th className="border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[99px]">
+                      <p className="flex items-center justify-between">Sr.</p>
+                    </th>
+                    <th
+                      onClick={() => sorting("name")}
+                      className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[310px]"
+                    >
+                      <p className="flex items-center justify-between">
+                        Full Name
+                        <SortIcon />
+                      </p>
+                    </th>
+                    <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[480px]">
+                      <p className="flex items-center justify-between">
+                        Test Score
+                      </p>
+                    </th>
+                    <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[313px]">
+                      <p className="flex items-center justify-between">
+                        Email Address
+                      </p>
+                    </th>
+                    <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[220px]">
+                      <p className="flex items-center justify-between">
+                        Phone Number
+                      </p>
+                    </th>
+                    <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[220px]">
+                      <p className="flex items-center justify-between">
+                        Alternate Phone Number
+                      </p>
+                    </th>
+                    <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[300px]">
+                      <p className="flex items-center justify-between">
+                        Hometown
+                      </p>
+                    </th>
+                    <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[300px]">
+                      <p className="flex items-center justify-between">
+                        Destination for Higher Studies
+                      </p>
+                    </th>
+                    <th
+                      // onClick={() => sorting("IeltsOrPte")}
+                      className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[200px]"
+                    >
+                      <p className="flex items-center justify-between">
+                        Choice of IELTS or PTE
+                        {/* <SortIcon /> */}
+                      </p>
+                    </th>
+                    <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[350px]">
+                      <p className="flex items-center justify-between">
+                        School or college they last attended.
+                      </p>
+                    </th>
+                    <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]">
+                      <p className="flex items-center justify-between">Age</p>
+                    </th>
+                    <th
+                      // onClick={() => sorting("Status")}
+                      className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]"
+                    >
+                      <p className="flex items-center justify-between">
+                        Status
+                        {/* <SortIcon /> */}
+                      </p>
+                    </th>
+                    <th className="text-center border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[100px]">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="overflow-y-auto">
+                  {filteredStudents.map((value, index) => {
+                    const isLastRow = index === filteredStudents.length - 1;
+                    // Calculate the percentages for each level
+                    const levelPercentages = value.scores.map((score) =>
+                      calculatePercentage(
+                        score.correctAnswers,
+                        score.totalQuestions
+                      )
+                    );
+                    return (
+                      <tr key={index} className="!w-full">
+                        <td className="border  w-[99px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
+                          {index + 1}
+                        </td>
+                        <td className="border w-[310px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
+                          {value.name}
+                        </td>
+                        <td className="border w-[480px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080]">
+                          {levelPercentages.map((percentage, levelIndex) => (
+                            <span key={levelIndex} className="me-5">
+                              Level {levelIndex + 1}: {percentage}%
+                            </span>
+                          ))}
+                        </td>
+                        <td className="border w-[313px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
+                          {value.email}
+                        </td>
+                        <td className="border w-[220px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
+                          {value.phoneNumber}
+                        </td>
+                        <td className="border w-[220px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
+                          {value.alternatePhoneNumber}
+                        </td>
+                        <td className="border w-[300px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
+                          {value.hometown}
+                        </td>
+                        <td className="border w-[300px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
+                          {value.coutryHigherStudies}
+                        </td>
+                        <td className="border w-[200px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-center">
+                          {value.IeltsOrPte}
+                        </td>
+                        <td className="border w-[350px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
+                          {value.School}
+                        </td>
+                        <td className="border w-[150px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
+                          {value.Age}
+                        </td>
+                        <td className="border w-[150px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
+                          {value.status}
+                        </td>
+                        <td className="border w-[100px] relative border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base  text-[#808080] text-center">
+                          <div className="relative">
+                            <Menu>
+                              <Menu.Button className="inline-flex justify-center w-full cursor-pointer">
+                                <ThreeDotIcon />
+                              </Menu.Button>
+                              <Menu.Items
+                                className={`absolute right-10 z-20 -top-[20px] mt-2 w-56 origin-top-right max-w-48 rounded-lg border border-solid bg-white border-[#D9D9D9]${
+                                  isLastRow
+                                    ? "transform translate-y-[-70%]"
+                                    : ""
+                                }`}
+                              >
+                                <Menu.Item>
+                                  <Link
+                                    // to={`/users/veiwprofile/${value.id}`}
+                                    className="flex items-center py-3 px-5 gap-4 cursor-pointer"
+                                  >
+                                    <ViewIcon />
+                                    <p className="ff_inter font-normal text-base mb-0 ">
+                                      View Profile
+                                    </p>
+                                  </Link>
+                                </Menu.Item>
+                                <Menu.Item>
+                                  <Link
+                                    onClick={() =>
+                                      handleUpdateStatus(
+                                        value.id,
+                                        " Mark Succeed"
+                                      )
+                                    }
+                                    className="flex items-center py-3 px-5 gap-4 cursor-pointer"
+                                  >
+                                    <SuccedIcon />
+                                    <p className="ff_inter font-normal text-base mb-0 ">
+                                      Mark Succeed
+                                    </p>
+                                  </Link>
+                                </Menu.Item>
+                                <Menu.Item>
+                                  <Link
+                                    onClick={() =>
+                                      handleUpdateStatus(
+                                        value.id,
+                                        "Not Interested"
+                                      )
+                                    }
+                                    className="flex items-center py-3 px-5 gap-4 cursor-pointer"
+                                  >
+                                    <NotInterestedIcon />
+                                    <p className="ff_inter font-normal text-base mb-0 ">
+                                      Not Interested
+                                    </p>
+                                  </Link>
+                                </Menu.Item>
+                              </Menu.Items>
+                            </Menu>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
       {/* Conditional Rendering of DeletePage */}
