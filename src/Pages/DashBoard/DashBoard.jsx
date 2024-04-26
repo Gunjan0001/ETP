@@ -68,7 +68,7 @@ const DashBoard = () => {
     const closedDeals = filterData.reduce((acc, student) => {
       const _createdAt = new Date(student.createdAt);
       const _updatedAt = new Date(student.updatedAt);
-      if (_createdAt != _updatedAt && student.status === LeadStatus.SUCCEED) {
+      if (student.status === LeadStatus.SUCCEED) {
         const dateKey = _createdAt.getDate();
         acc[dateKey] = acc[dateKey] ? acc[dateKey] + 1 : 1;
       }
@@ -138,14 +138,14 @@ const DashBoard = () => {
       <Navbar navbarData="Dashboard" />
       <div className="mt-20 p-8  bg-[#F8F9FA]">
         <p className="text-lg mb-0  text-[#0047FF] text-end">April 2024</p>
-        <div className="flex gap-3 flex-wrap w-full mt-5">
-          <div className="max-w-[282px] w-full border-2 border-[#00000066] shadow-lg p-5 rounded-md flex justify-center items-center flex-col">
+        <div className="flex gap-3 flex-wrap x4l:flex-nowrap w-full mt-5">
+          <div className="max-w-[282px] x4l:max-w-full w-full border-2 border-[#00000066] shadow-lg p-5 rounded-md flex justify-center items-center flex-col">
             <img src={adminlogo} alt="logo" />
             <p className="mb-0 mt-[10px] text-center">Welcome Admin</p>
           </div>
-          <div className="max-w-[282px] w-full border-2 border-[#FF2000] shadow-lg p-5 rounded-md flex justify-center items-center flex-col">
+          <div className="max-w-[282px] x4l:max-w-full w-full border-2 border-[#FF2000] shadow-lg p-5 rounded-md flex justify-center items-center flex-col">
             <p className="font-medium  mb-2">Total Leads</p>
-            <div className="border-t border-t-[#00000033] flex py-2 w-full justify-center gap-10">
+            <div className="border-t border-t-[#00000033] flex py-2 w-full justify-evenly gap-10">
               <p className="text-center mb-0">
                 IELTS<br></br>
                 <span className="font-bold text-[32px] text-[#FF2000]">{totalIELTSLeads}</span>
@@ -156,9 +156,9 @@ const DashBoard = () => {
               </p>
             </div>
           </div>
-          <div className="max-w-[282px] w-full border-2 border-[#04B92C] shadow-lg p-5 rounded-md flex justify-center items-center flex-col">
+          <div className="max-w-[282px] x4l:max-w-full w-full border-2 border-[#04B92C] shadow-lg p-5 rounded-md flex justify-center items-center flex-col">
             <p className="font-medium mb-2">Leads Closed</p>
-            <div className="border-t border-t-[#00000033] flex py-2 w-full justify-center gap-10">
+            <div className="border-t border-t-[#00000033] flex py-2 w-full  justify-evenly gap-10">
               <p className="text-center mb-0">
                 IELTS
                 <br />
@@ -175,16 +175,22 @@ const DashBoard = () => {
               </p>
             </div>
           </div>
-          <div className="max-w-[282px] w-full border-2 border-[#FFA620] shadow-lg p-5 rounded-md flex justify-center items-center flex-col">
+          <div className="max-w-[282px] x4l:max-w-full w-full border-2 border-[#FFA620] shadow-lg p-5 rounded-md flex justify-center items-center flex-col">
             <p className="font-medium  mb-2">Conversion Rate</p>
-            <div className="border-t border-t-[#00000033] flex py-2 w-full justify-center gap-3">
+            <div className="border-t border-t-[#00000033] flex py-2 w-full  justify-evenly gap-3">
               <p className="text-center mb-0">
                 IELTS<br></br>
-                <span className="font-bold text-[32px] text-[#FFA620]">{conversionRateIELTS}%</span>
+                <span className="font-bold text-[32px] text-[#FFA620]">
+                  {Math.floor(conversionRateIELTS)}
+                  <span className="text-xl">%</span>
+                </span>
               </p>
               <p className="text-center mb-0">
                 PTE<br></br>
-                <span className="font-bold text-[32px] text-[#FFA620]">{conversionRatePTE}%</span>
+                <span className="font-bold text-[32px] text-[#FFA620]">
+                  {Math.floor(conversionRatePTE)}
+                  <span className="text-xl">%</span>
+                </span>
               </p>
             </div>
           </div>
@@ -266,9 +272,7 @@ const DashBoard = () => {
                 <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]">
                   <p className="flex items-center justify-between">Age</p>
                 </th>
-                <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]">
-                  <p className="flex items-center justify-between">Status</p>
-                </th>
+               
                 <th className="text-center border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[100px]">
                   Action
                 </th>
@@ -320,9 +324,9 @@ const DashBoard = () => {
                     <td className="border w-[150px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
                       {value.Age}
                     </td>
-                    <td className="border w-[150px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
+                    {/* <td className="border w-[150px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">
                       {value.status || LeadStatus.NEW}
-                    </td>
+                    </td> */}
 
                     <td className="border w-[100px] relative border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base  text-[#808080] text-center">
                       <div className="relative">
@@ -340,34 +344,6 @@ const DashBoard = () => {
                                 className="flex items-center py-3 px-5 gap-4 cursor-pointer">
                                 <ViewIcon />
                                 <p className="ff_inter font-normal text-base mb-0 ">View Profile</p>
-                              </Link>
-                            </Menu.Item>
-                            <Menu.Item>
-                              <Link
-                                // onClick={() =>
-                                //   handleUpdateStatus(
-                                //     value.id,
-                                //     LeadStatus.SUCCEED
-                                //   )
-                                // }
-                                className="flex items-center py-3 px-5 gap-4 cursor-pointer">
-                                <SuccedIcon />
-                                <p className="ff_inter font-normal text-base mb-0 ">Mark Succeed</p>
-                              </Link>
-                            </Menu.Item>
-                            <Menu.Item>
-                              <Link
-                                // onClick={() =>
-                                //   handleUpdateStatus(
-                                //     value.id,
-                                //     LeadStatus.NOT_INTERESTED
-                                //   )
-                                // }
-                                className="flex items-center py-3 px-5 gap-4 cursor-pointer">
-                                <NotInterestedIcon />
-                                <p className="ff_inter font-normal text-base mb-0 ">
-                                  Not Interested
-                                </p>
                               </Link>
                             </Menu.Item>
                           </Menu.Items>
