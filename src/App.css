@@ -125,11 +125,13 @@ body{
 /* Make the table header sticky */
 .table-auto thead {
   position: sticky;
-  top: -10px;
+  top: 0;
   z-index: 1; /* Ensure it stays on top of other elements */
   border: 1px solid black !important;
 }
-
+thead{
+  border: 1px solid black !important;
+}
 .Question_height {
   height: calc(100vh - 320px) !important;
 }

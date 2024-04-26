@@ -45,13 +45,8 @@ const User = () => {
   const { studentsData, updateStudentData, updateStatusonFirebase } =
     StudentgetterContext();
   // console.log(studentsData, "gunjan");
-  const [iletsorpte, setIletsorpte] = useState(() => {
-    if (studentsData.length > 0) {
-      return "All";
-    } else {
-      return "";
-    }
-  });
+  const [iletsorpte, setIletsorpte] = useState("All");
+
   const handleUpdateStatus = (studentId, newStatus) => {
     updateStatusonFirebase(studentId, newStatus);
   };
@@ -70,7 +65,7 @@ const User = () => {
 
   useEffect(() => {
     setLoading(true);
-    const filteredData = studentsData.filter((student) => {
+    let filteredData = studentsData.filter((student) => {
       const schoolname = student.School && student.School.toLowerCase();
       const hometown = student.hometown && student.hometown.toLowerCase();
       const countrydestination =
@@ -89,10 +84,17 @@ const User = () => {
         return studentsData;
       }
     });
+
+    // Filter based on iletsorpte
+    if (iletsorpte !== "All") {
+      filteredData = filteredData.filter((student) => {
+        return student.IeltsOrPte === iletsorpte;
+      });
+    }
+
     setFilteredStudents(filteredData);
     setLoading(false);
-  }, [studentsData, searchValue, searchCategory]);
-
+  }, [studentsData, searchValue, searchCategory, iletsorpte]);
   useEffect(() => {
     if (showpopup) {
       document.body.classList.add("no-scroll");
@@ -235,7 +237,11 @@ const User = () => {
   };
   return (
     <>
-      <Navbar navbarData="Manage Leads" startData="Leads /" data=" Manage Leads" />
+      <Navbar
+        navbarData="Manage Leads"
+        startData="Leads /"
+        data=" Manage Leads"
+      />
       <div className="mt-24">
         <div className="py-5 px-8 relative z-10">
           {/* Search and Filter Section */}
@@ -291,9 +297,7 @@ const User = () => {
                           onClick={() => {
                             setIsOpenall(false);
                             setIsOpen(false);
-                            const firstStudentIeltsOrPte =
-                              studentsData.length > 0 ? "All" : "";
-                            setIletsorpte(firstStudentIeltsOrPte);
+                            setIletsorpte("All");
                           }}
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
@@ -304,12 +308,12 @@ const User = () => {
                           onClick={() => {
                             setIsOpenall(false);
                             setIsOpen(false);
-                            setIletsorpte("ILETS");
+                            setIletsorpte("IELTS");
                           }}
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                         >
-                          ILETS
+                          IELTS
                         </button>
                         <button
                           onClick={() => {
@@ -543,9 +547,7 @@ const User = () => {
                           {value.coutryHigherStudies}
                         </td>
                         <td className="border w-[200px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-center">
-                          {isOpenall && iletsorpte === "All"
-                            ? value.IeltsOrPte
-                            : iletsorpte}
+                          {value.IeltsOrPte}
                         </td>
 
                         <td className="border w-[350px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-[#808080] text-center">

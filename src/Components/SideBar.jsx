@@ -94,7 +94,7 @@ const SideBar = () => {
                 <Arrow />
               </NavLink> */}
               <NavLink
-                to="settings/questions"
+                // to="settings/questions"
                 className={({ isActive }) =>
                   isActive
                     ? ' flex items-center  p-[10px] mt-2 text-xs ms-5 justify-between  project_data_active rounded-l-[50px] ease-out transition-all duration-300 '

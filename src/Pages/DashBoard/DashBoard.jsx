@@ -89,6 +89,18 @@ const DashBoard = () => {
     totalPTELeads,
     totalSuccessfulPTELeads
   );
+  const initialSeriesData = Array.from({ length: 12 }, () => 0);
+
+  const series = [
+    {
+      name: "succ",
+      data: initialSeriesData,
+    },
+    {
+      name: "rej",
+      data: initialSeriesData,
+    },
+  ];
   if (loading) {
     return <Loader />;
   }
@@ -158,26 +170,26 @@ const DashBoard = () => {
           </div>
         </div>
         <div className="shadow-md bg-white p-[2px]  rounded-[10px]  mt-6 px-5">
-         <div className="flex justify-between mt-5">
-          <p className="font-medium mb-0">Conversion Graph</p>
-          <div>
-            <div className="flex items-center gap-2 ">
-              <span className="w-[38px] h-[6px] bg-[#B63336] rounded-[5px]"></span>
-              <p className="mb-0 text-xs">/ Total Leads</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-[38px] h-[6px] bg-[#04B92C] rounded-[5px]"></span>
-              <p className="mb-0 text-xs">% Attributed Students</p>
+          <div className="flex justify-between mt-5">
+            <p className="font-medium mb-0">Conversion Graph</p>
+            <div>
+              <div className="flex items-center gap-2 ">
+                <span className="w-[38px] h-[6px] bg-[#B63336] rounded-[5px]"></span>
+                <p className="mb-0 text-xs">/ Total Leads</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-[38px] h-[6px] bg-[#04B92C] rounded-[5px]"></span>
+                <p className="mb-0 text-xs">% Attributed Students</p>
+              </div>
             </div>
           </div>
-         </div>
-          <LineChart
-            series={[
-              { curve: "linear", data: [0, 2, 4, 6, 10, ] },
-              { curve: "linear", data: [0, 9, 7,  4, 2] },
-            ]}
-            height={373}
-          />
+          <div className="catt">
+            <LineChart
+              xAxis={[{ data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }]}
+              series={series}
+              height={373}
+            />
+          </div>
         </div>
         <p className="mb-0 font-medium my-4">Recently Closed</p>
         <div className="overflow-x-auto table_hight2 mt-8">
