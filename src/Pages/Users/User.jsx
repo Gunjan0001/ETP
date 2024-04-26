@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from 'react';
 import {
   Arrow,
   Downarrow,
@@ -7,7 +7,7 @@ import {
   SortIcon,
   SuccedIcon,
   ThreeDotIcon,
-} from "../../Components/Icons";
+} from '../../Components/Icons';
 import {
   BinIcon,
   DownloadIcon,
@@ -15,37 +15,36 @@ import {
   NewUserIcon,
   SearchIcon,
   ViewIcon,
-} from "../../Components/Icons";
-import { Link } from "react-router-dom";
-import { TableData } from "../../Components/Helper";
-import { Menu } from "@headlessui/react";
-import Loader from "../../Pages/Loader";
-import Navbar from "../../Components/Navbar";
-import { StudentgetterContext } from "../../Components/Context/AllStudentsData";
-import DeletePage from "../DeletePage";
+} from '../../Components/Icons';
+import { Link } from 'react-router-dom';
+import { TableData } from '../../Components/Helper';
+import { Menu } from '@headlessui/react';
+import Loader from '../../Pages/Loader';
+import Navbar from '../../Components/Navbar';
+import { StudentgetterContext } from '../../Components/Context/AllStudentsData';
+import DeletePage from '../DeletePage';
 
 const LeadStatus = {
-  NEW: "NEW",
-  SUCCEED: "SUCCEED",
-  NOT_INTERESTED: "NOT INTERESTED",
+  NEW: 'NEW',
+  SUCCEED: 'SUCCEED',
+  NOT_INTERESTED: 'NOT INTERESTED',
 };
 
 const User = () => {
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [showpopup, setShowpopup] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenall, setIsOpenall] = useState(false);
-  const [searchCategory, setSearchCategory] = useState("School Name");
+  const [searchCategory, setSearchCategory] = useState('School Name');
 
-  const [order, setorder] = useState("ASC");
+  const [order, setorder] = useState('ASC');
   const [loading, setLoading] = useState(true);
   // context
   // console.log(filteredStudents);
-  const { studentsData, updateStudentData, updateStatusonFirebase } =
-    StudentgetterContext();
+  const { studentsData, updateStudentData, updateStatusonFirebase } = StudentgetterContext();
   // console.log(studentsData, "gunjan");
-  const [iletsorpte, setIletsorpte] = useState("All");
+  const [iletsorpte, setIletsorpte] = useState('All');
 
   const handleUpdateStatus = (studentId, newStatus) => {
     updateStatusonFirebase(studentId, newStatus);
@@ -53,13 +52,13 @@ const User = () => {
   function getStatusColor(status) {
     switch (status) {
       case LeadStatus.NEW:
-        return "#000000"; // Black color for NEW status
+        return '#000000'; // Black color for NEW status
       case LeadStatus.SUCCEED:
-        return "#008000"; // Green color for SUCCEED status
+        return '#008000'; // Green color for SUCCEED status
       case LeadStatus.NOT_INTERESTED:
-        return "#FFA500"; // Orange color for NOT_INTERESTED status
+        return '#FFA500'; // Orange color for NOT_INTERESTED status
       default:
-        return "#000000"; // Default color
+        return '#000000'; // Default color
     }
   }
 
@@ -69,16 +68,12 @@ const User = () => {
       const schoolname = student.School && student.School.toLowerCase();
       const hometown = student.hometown && student.hometown.toLowerCase();
       const countrydestination =
-        student.coutryHigherStudies &&
-        student.coutryHigherStudies.toLowerCase();
-      if (searchCategory === "hometown" && hometown) {
+        student.coutryHigherStudies && student.coutryHigherStudies.toLowerCase();
+      if (searchCategory === 'Hometown' && hometown) {
         return hometown.includes(searchValue.toLowerCase());
-      } else if (
-        searchCategory === "Country Destination" &&
-        countrydestination
-      ) {
+      } else if (searchCategory === 'Country Destination' && countrydestination) {
         return countrydestination.includes(searchValue.toLowerCase());
-      } else if (searchCategory === "School Name" && schoolname) {
+      } else if (searchCategory === 'School Name' && schoolname) {
         return schoolname.includes(searchValue.toLowerCase());
       } else {
         return studentsData;
@@ -86,7 +81,7 @@ const User = () => {
     });
 
     // Filter based on iletsorpte
-    if (iletsorpte !== "All") {
+    if (iletsorpte !== 'All') {
       filteredData = filteredData.filter((student) => {
         return student.IeltsOrPte === iletsorpte;
       });
@@ -97,48 +92,48 @@ const User = () => {
   }, [studentsData, searchValue, searchCategory, iletsorpte]);
   useEffect(() => {
     if (showpopup) {
-      document.body.classList.add("no-scroll");
+      document.body.classList.add('no-scroll');
     } else {
-      document.body.classList.remove("no-scroll");
+      document.body.classList.remove('no-scroll');
     }
   }, [showpopup]);
   /*  *******************************
     Export  Excel File start from here  
   *********************************************   **/
-  const ExcelJS = require("exceljs");
+  const ExcelJS = require('exceljs');
 
   function exportExcelFile() {
     const workbook = new ExcelJS.Workbook();
-    const excelSheet = workbook.addWorksheet("Student List");
+    const excelSheet = workbook.addWorksheet('Student List');
     excelSheet.properties.defaultRowHeight = 20;
 
     excelSheet.getRow(1).font = {
-      name: "Conic Sans MS",
+      name: 'Conic Sans MS',
       family: 4,
       size: 14,
       bold: true,
     };
     excelSheet.columns = [
-      { header: "Sr.", key: "Sr", width: 15 },
-      { header: "Full Name", key: "FullName", width: 30 },
-      { header: "Test Score", key: "TestScore", width: 30 },
-      { header: "Email Address", key: "EmailAddress", width: 30 },
-      { header: "Phone Number", key: "PhoneNumber", width: 20 },
+      { header: 'Sr.', key: 'Sr', width: 15 },
+      { header: 'Full Name', key: 'FullName', width: 30 },
+      { header: 'Test Score', key: 'TestScore', width: 30 },
+      { header: 'Email Address', key: 'EmailAddress', width: 30 },
+      { header: 'Phone Number', key: 'PhoneNumber', width: 20 },
       {
-        header: "Alternate Phone Number",
-        key: "AlternatePhoneNumber",
+        header: 'Alternate Phone Number',
+        key: 'AlternatePhoneNumber',
         width: 20,
       },
-      { header: "Hometown", key: "Hometown", width: 30 },
+      { header: 'Hometown', key: 'Hometown', width: 30 },
       {
-        header: "Destination for Higher Studies",
-        key: "DestinationHigherStudies",
+        header: 'Destination for Higher Studies',
+        key: 'DestinationHigherStudies',
         width: 30,
       },
-      { header: "Choice of IELTS or PTE", key: "IeltsOrPte", width: 20 },
-      { header: "School or College", key: "School", width: 30 },
-      { header: "Age", key: "Age", width: 15 },
-      { header: "Status", key: "Status", width: 15 },
+      { header: 'Choice of IELTS or PTE', key: 'IeltsOrPte', width: 20 },
+      { header: 'School or College', key: 'School', width: 30 },
+      { header: 'Age', key: 'Age', width: 15 },
+      { header: 'Status', key: 'Status', width: 15 },
     ];
 
     filteredStudents.forEach((student, index) => {
@@ -149,7 +144,7 @@ const User = () => {
       excelSheet.addRow({
         Sr: index + 1,
         FullName: student.name,
-        TestScore: levelPercentages.join(", "),
+        TestScore: levelPercentages.join(', '),
         EmailAddress: student.email,
         PhoneNumber: student.phoneNumber,
         AlternatePhoneNumber: student.alternatePhoneNumber,
@@ -158,19 +153,19 @@ const User = () => {
         IeltsOrPte: student.IeltsOrPte,
         School: student.School,
         Age: student.Age,
-        Status: "New", // Assuming 'Status' is a fixed value
+        Status: 'New', // Assuming 'Status' is a fixed value
       });
     });
 
     workbook.xlsx.writeBuffer().then((data) => {
       let blob = new Blob([data], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
 
       const url = window.URL.createObjectURL(blob);
-      const anchor = document.createElement("a");
+      const anchor = document.createElement('a');
       anchor.href = url;
-      anchor.download = "studentList.xlsx";
+      anchor.download = 'studentList.xlsx';
       anchor.click();
       window.URL.revokeObjectURL(url);
     });
@@ -192,65 +187,74 @@ const User = () => {
     // Create a copy of the data array
     const sortedData = [...studentsData];
     // console.log("sorting data ,",sortedData)
-    if (order === "ASC") {
+    if (order === 'ASC') {
       sortedData.sort((a, b) => {
         const valueA =
-          typeof getProperty(a, col) === "number"
+          typeof getProperty(a, col) === 'number'
             ? getProperty(a, col)
             : getProperty(a, col).toLowerCase();
         const valueB =
-          typeof getProperty(b, col) === "number"
+          typeof getProperty(b, col) === 'number'
             ? getProperty(b, col)
             : getProperty(b, col).toLowerCase();
-        return typeof valueA === "number"
-          ? valueA - valueB
-          : valueA.localeCompare(valueB);
+        return typeof valueA === 'number' ? valueA - valueB : valueA.localeCompare(valueB);
       });
     } else {
       // If the order is not ASC, assume it's DESC
       sortedData.sort((a, b) => {
         const valueA =
-          typeof getProperty(a, col) === "number"
+          typeof getProperty(a, col) === 'number'
             ? getProperty(a, col)
             : getProperty(a, col).toLowerCase();
         const valueB =
-          typeof getProperty(b, col) === "number"
+          typeof getProperty(b, col) === 'number'
             ? getProperty(b, col)
             : getProperty(b, col).toLowerCase();
-        return typeof valueA === "number"
-          ? valueB - valueA
-          : valueB.localeCompare(valueA);
+        return typeof valueA === 'number' ? valueB - valueA : valueB.localeCompare(valueA);
       });
     }
     // Update the order state
-    const newOrder = order === "ASC" ? "DESC" : "ASC";
+    const newOrder = order === 'ASC' ? 'DESC' : 'ASC';
     setorder(newOrder);
     updateStudentData(sortedData);
   };
   const getProperty = (obj, path) => {
-    const keys = path.split(".");
+    const keys = path.split('.');
     let result = obj;
     for (let key of keys) {
       result = result[key];
     }
     return result;
   };
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    // Function to handle click outside dropdown
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+        setIsOpenall(false);
+      }
+    }
+
+    // Adding event listener on mount
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Cleanup on unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   return (
     <>
-      <Navbar
-        navbarData="Manage Leads"
-        startData="Leads /"
-        data=" Manage Leads"
-      />
+      <Navbar navbarData="Manage Leads" startData="Leads /" data=" Manage Leads" />
       <div className="mt-24">
         <div className="py-5 px-8 relative z-10">
           {/* Search and Filter Section */}
           <div className="flex items-center justify-between">
             {/* Search Input */}
             <div>
-              <p className="ff-outfit font-semibold text-lg mb-0">
-                Student’s List
-              </p>
+              <p className="ff-outfit font-semibold text-lg mb-0">Student’s List</p>
               <p className="ff-outfit font-normal text-xs mb-0 mt-1">
                 {`Total ${filteredStudents.length} students`}
               </p>
@@ -265,17 +269,15 @@ const User = () => {
                       setIsOpenall(!isOpenall);
                       setIsOpen(false);
                     }}
-                    className="flex items-center gap-2 text-[#B63336] rounded-md focus:outline-none px-3"
-                  >
+                    className="flex items-center gap-2 text-[#B63336] rounded-md focus:outline-none px-3">
                     <svg
                       className={`w-4 h-4xx transition-transform transform ${
-                        isOpenall ? "rotate-180" : ""
+                        isOpenall ? 'rotate-180' : ''
                       }`}
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke="#000000"
-                    >
+                      stroke="#000000">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -286,44 +288,42 @@ const User = () => {
                     {iletsorpte}
                   </button>
                   {isOpenall && (
-                    <div className="absolute z-50 right-0 mt-2 w-[180px] origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <div
+                      ref={dropdownRef}
+                      className="absolute z-50 right-0 mt-2 w-[180px] origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div
                         className="py-1"
                         role="menu"
                         aria-orientation="vertical"
-                        aria-labelledby="options-menu"
-                      >
+                        aria-labelledby="options-menu">
                         <button
                           onClick={() => {
                             setIsOpenall(false);
                             setIsOpen(false);
-                            setIletsorpte("All");
+                            setIletsorpte('All');
                           }}
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
+                          role="menuitem">
                           All
                         </button>
                         <button
                           onClick={() => {
                             setIsOpenall(false);
                             setIsOpen(false);
-                            setIletsorpte("IELTS");
+                            setIletsorpte('IELTS');
                           }}
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
+                          role="menuitem">
                           IELTS
                         </button>
                         <button
                           onClick={() => {
                             setIsOpenall(false);
                             setIsOpen(false);
-                            setIletsorpte("PTE");
+                            setIletsorpte('PTE');
                           }}
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
+                          role="menuitem">
                           PTE
                         </button>
                       </div>
@@ -337,20 +337,18 @@ const User = () => {
                 <div className="relative z-[999]">
                   <button
                     onClick={() => {
-                      setIsOpen(!isOpen);
+                      setIsOpen(isOpen ? false : true);
                       setIsOpenall(false);
                     }}
-                    className="flex items-center gap-2 text-[#B63336] rounded-md focus:outline-none px-3"
-                  >
+                    className="flex items-center gap-2 text-[#B63336] rounded-md focus:outline-none px-3">
                     <svg
                       className={`w-4 h-4xx transition-transform transform ${
-                        isOpen ? "rotate-180" : ""
+                        isOpen ? 'rotate-180' : ''
                       }`}
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke="#000000"
-                    >
+                      stroke="#000000">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -361,44 +359,42 @@ const User = () => {
                     {searchCategory}
                   </button>
                   {isOpen && (
-                    <div className="absolute z-50 right-0 mt-2 w-[180px] origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <div
+                      ref={dropdownRef}
+                      className="absolute z-50 right-0 mt-2 w-[180px] origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div
                         className="py-1"
                         role="menu"
                         aria-orientation="vertical"
-                        aria-labelledby="options-menu"
-                      >
+                        aria-labelledby="options-menu">
                         <button
                           onClick={() => {
                             setIsOpen(false);
                             setIsOpenall(false);
-                            setSearchCategory("School Name");
+                            setSearchCategory('School Name');
                           }}
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
+                          role="menuitem">
                           School Name
                         </button>
                         <button
                           onClick={() => {
                             setIsOpen(false);
                             setIsOpenall(false);
-                            setSearchCategory("hometown");
+                            setSearchCategory('Hometown');
                           }}
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
-                          hometown
+                          role="menuitem">
+                          Hometown
                         </button>
                         <button
                           onClick={() => {
                             setIsOpen(false);
                             setIsOpenall(false);
-                            setSearchCategory("Country Destination");
+                            setSearchCategory('Country Destination');
                           }}
                           className="block w-full text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
+                          role="menuitem">
                           Country Destination
                         </button>
                       </div>
@@ -420,8 +416,7 @@ const User = () => {
               </div>
               <button
                 onClick={exportExcelFile}
-                className="ff-outfit text-base font-normal text-white ff_inter font-base bg-[#8C8C8C] py-3 gap-[10px] px-[15px] rounded-[10px] flex items-center"
-              >
+                className="ff-outfit text-base font-normal text-white ff_inter font-base bg-[#8C8C8C] py-3 gap-[10px] px-[15px] rounded-[10px] flex items-center">
                 <DownloadIcon />
                 Download CSV
               </button>
@@ -441,38 +436,27 @@ const User = () => {
                       <p className="flex items-center justify-between">Sr.</p>
                     </th>
                     <th
-                      onClick={() => sorting("name")}
-                      className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[310px]"
-                    >
+                      onClick={() => sorting('name')}
+                      className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[310px]">
                       <p className="flex items-center justify-between">
                         Full Name
                         <SortIcon />
                       </p>
                     </th>
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[480px]">
-                      <p className="flex items-center justify-between">
-                        Test Score
-                      </p>
+                      <p className="flex items-center justify-between">Test Score</p>
                     </th>
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[313px]">
-                      <p className="flex items-center justify-between">
-                        Email Address
-                      </p>
+                      <p className="flex items-center justify-between">Email Address</p>
                     </th>
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[220px]">
-                      <p className="flex items-center justify-between">
-                        Phone Number
-                      </p>
+                      <p className="flex items-center justify-between">Phone Number</p>
                     </th>
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[220px]">
-                      <p className="flex items-center justify-between">
-                        Alternate Phone Number
-                      </p>
+                      <p className="flex items-center justify-between">Alternate Phone Number</p>
                     </th>
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[300px]">
-                      <p className="flex items-center justify-between">
-                        Hometown
-                      </p>
+                      <p className="flex items-center justify-between">Hometown</p>
                     </th>
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[300px]">
                       <p className="flex items-center justify-between">
@@ -481,8 +465,7 @@ const User = () => {
                     </th>
                     <th
                       // onClick={() => sorting("IeltsOrPte")}
-                      className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[200px]"
-                    >
+                      className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[200px]">
                       <p className="flex items-center justify-between">
                         Choice of IELTS or PTE
                         {/* <SortIcon /> */}
@@ -497,9 +480,7 @@ const User = () => {
                       <p className="flex items-center justify-between">Age</p>
                     </th>
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]">
-                      <p className="flex items-center justify-between">
-                        Status
-                      </p>
+                      <p className="flex items-center justify-between">Status</p>
                     </th>
                     <th className="text-center border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[100px]">
                       Action
@@ -511,10 +492,7 @@ const User = () => {
                     const isLastRow = index === filteredStudents.length - 1;
                     // Calculate the percentages for each level
                     const levelPercentages = value.scores.map((score) =>
-                      calculatePercentage(
-                        score.correctAnswers,
-                        score.totalQuestions
-                      )
+                      calculatePercentage(score.correctAnswers, score.totalQuestions)
                     );
                     return (
                       <tr key={index} className="!w-full">
@@ -558,8 +536,7 @@ const User = () => {
                         </td>
                         <td
                           className="border w-[150px] border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base text-center"
-                          style={{ color: getStatusColor(value.status) }}
-                        >
+                          style={{ color: getStatusColor(value.status) }}>
                           {value.status || LeadStatus.NEW}
                         </td>
 
@@ -571,54 +548,52 @@ const User = () => {
                               </Menu.Button>
                               <Menu.Items
                                 className={`absolute right-10 z-20 -top-[20px] mt-2 w-56 origin-top-right max-w-48 rounded-lg border border-solid bg-white border-[#D9D9D9]${
-                                  isLastRow
-                                    ? "transform translate-y-[-70%]"
-                                    : ""
-                                }`}
-                              >
+                                  isLastRow ? 'transform translate-y-[-70%]' : ''
+                                }`}>
                                 <Menu.Item>
                                   <Link
                                     to={`/userprofile/${value.id}`}
-                                    className="flex items-center py-3 px-5 gap-4 cursor-pointer"
-                                  >
+                                    className="flex items-center py-3 px-5 gap-4 cursor-pointer">
                                     <ViewIcon />
                                     <p className="ff_inter font-normal text-base mb-0 ">
                                       View Profile
                                     </p>
                                   </Link>
                                 </Menu.Item>
-                                <Menu.Item>
-                                  <Link
-                                    onClick={() =>
-                                      handleUpdateStatus(
-                                        value.id,
-                                        LeadStatus.SUCCEED
-                                      )
-                                    }
-                                    className="flex items-center py-3 px-5 gap-4 cursor-pointer"
-                                  >
-                                    <SuccedIcon />
-                                    <p className="ff_inter font-normal text-base mb-0 ">
-                                      Mark Succeed
-                                    </p>
-                                  </Link>
-                                </Menu.Item>
-                                <Menu.Item>
-                                  <Link
-                                    onClick={() =>
-                                      handleUpdateStatus(
-                                        value.id,
-                                        LeadStatus.NOT_INTERESTED
-                                      )
-                                    }
-                                    className="flex items-center py-3 px-5 gap-4 cursor-pointer"
-                                  >
-                                    <NotInterestedIcon />
-                                    <p className="ff_inter font-normal text-base mb-0 ">
-                                      Not Interested
-                                    </p>
-                                  </Link>
-                                </Menu.Item>
+                                {value.status === LeadStatus.NOT_INTERESTED ||
+                                value.status === LeadStatus.NEW ||
+                                value.status === undefined ? (
+                                  <Menu.Item>
+                                    <Link
+                                      onClick={() =>
+                                        handleUpdateStatus(value.id, LeadStatus.SUCCEED)
+                                      }
+                                      className="flex items-center py-3 px-5 gap-4 cursor-pointer">
+                                      <SuccedIcon />
+                                      <p className="ff_inter font-normal text-base mb-0 ">
+                                        Mark Succeed
+                                      </p>
+                                    </Link>
+                                  </Menu.Item>
+                                ) : (
+                                  ''
+                                )}
+                                {value.status === LeadStatus.NEW || value.status === undefined ? (
+                                  <Menu.Item>
+                                    <Link
+                                      onClick={() =>
+                                        handleUpdateStatus(value.id, LeadStatus.NOT_INTERESTED)
+                                      }
+                                      className="flex items-center py-3 px-5 gap-4 cursor-pointer">
+                                      <NotInterestedIcon />
+                                      <p className="ff_inter font-normal text-base mb-0 ">
+                                        Not Interested
+                                      </p>
+                                    </Link>
+                                  </Menu.Item>
+                                ) : (
+                                  ''
+                                )}
                               </Menu.Items>
                             </Menu>
                           </div>
