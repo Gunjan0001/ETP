@@ -8,13 +8,14 @@ export const QuestiongetterContext = () => {
 export const QuestiongetterProvider = ({ children }) => {
   const [QuestionsData, setQuestionsData] = useState([]);
   useEffect(() => {
-    async function QuestionData() {
+    async function QuestionData(doc) {
       try {
         const snapshot = await getDocs(collection(db, "Test"));
         const QuestionList = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
+        
         setQuestionsData(QuestionList);
       } catch (error) {
         console.log("error in fetching Questions Data", error);

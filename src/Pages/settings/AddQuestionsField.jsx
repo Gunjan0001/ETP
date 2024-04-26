@@ -7,13 +7,19 @@ import {
 } from "../../Components/Icons";
 import Level from "./Level";
 import { chooseOptionsData } from "../../Components/Helper";
+import { db } from "../../firebase";
 
-const AddQuestionsField = ({ setShowPopups, LevelId }) => {
-  console.log("asdfsdfasdfsdf", LevelId);
+const AddQuestionsField = ({ setShowPopups, doc }) => {
+  const [isDocIdAvailable, setIsDocIdAvailable] = useState(false);
   const [chooseAns, setChooseAns] = useState(null);
   const [addQuestions, setAddQuestions] = useState(false);
   const [answerOption, setAnswerOption] = useState([]);
   const [answerText, setAnswerText] = useState("");
+  
+  const [submitQuestion, setSubmitQuestions] = useState({
+    title: "",
+    des: "",
+  });
   const getNextOptionLetter = () => {
     const lastOption = answerOption[answerOption.length - 1];
     if (!lastOption) {
@@ -42,10 +48,38 @@ const AddQuestionsField = ({ setShowPopups, LevelId }) => {
     console.log("asdf", answerOption);
   }, [answerOption]);
 
-  const [submitQuestion, setSubmitQuestions] = useState({
-    title: "",
-    des: "",
-  });
+  useEffect(() => {
+    if (doc && doc.id) {
+      setIsDocIdAvailable(true);
+    } else {
+      setIsDocIdAvailable(false);
+    }
+  }, [doc]);
+
+  const addQuestionToFirebase = () => {
+    if (!isDocIdAvailable) {
+      console.error("Document ID not available. Unable to add question.");
+      return;
+    }
+
+    // Add question data to Firebase
+    db.collection("Test").doc(doc.id).collection("questions").add({
+      title: submitQuestion.title,
+      des: submitQuestion.des,
+      options: answerOption,
+    })
+    .then(() => {
+      console.log("Question added successfully!");
+      // Clear form fields
+      setSubmitQuestions({ title: "", des: "" });
+      setAnswerOption([]);
+    })
+    .catch((error) => {
+      console.error("Error adding question: ", error);
+    });
+    
+  };
+  
   function handleInputChange(e) {
     let name = e.target.name;
     let value = e.target.value;
@@ -53,6 +87,7 @@ const AddQuestionsField = ({ setShowPopups, LevelId }) => {
   }
   const onHandleSubmit = (e) => {
     e.preventDefault();
+    addQuestionToFirebase();
     setSubmitQuestions({
       title: "",
       des: "",
