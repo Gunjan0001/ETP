@@ -110,7 +110,6 @@ const DashBoard = () => {
     setStudentData(graphData);
   }, [studentsData]); // Run this effect whenever studentsData changes
 
-  console.log(studentData);
   const totalsucessleads = studentsData.filter((lead) => lead.status === LeadStatus.SUCCEED);
   // Function to calculate the percentage
   const calculatePercentage = (correctAnswers, totalQuestions) => {

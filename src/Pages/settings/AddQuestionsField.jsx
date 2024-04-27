@@ -1,27 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   AddItemIcon,
   ChooseOptionActiveIcon,
   ChooseOptionIcon,
   ResetIcon,
-} from "../../Components/Icons";
-import Level from "./Level";
-import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase";
-const AddQuestionsField = ({ setShowPopups, levelId }) => {
+} from '../../Components/Icons';
+import Level from './Level';
+import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { ToastContainer, toast } from 'react-toastify';
+const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
   const [chooseAns, setChooseAns] = useState(null);
   const [addQuestions, setAddQuestions] = useState(false);
   const [answeroption, setAnsweroption] = useState([]);
-  const [answertext, setAnswertext] = useState("");
+  const [answertext, setAnswertext] = useState('');
 
   const [submitQuestion, setSubmitQuestions] = useState({
-    question: "",
-    description: "",
+    question: '',
+    description: '',
   });
   const getNextOptionLetter = () => {
     const lastOption = answeroption[answeroption.length - 1];
     if (!lastOption) {
-      return "a"; // If no options, start with 'a'
+      return 'a'; // If no options, start with 'a'
     }
     const lastOptionLetter = lastOption.optionNo;
     // Increment the last letter to get the next one
@@ -39,22 +40,34 @@ const AddQuestionsField = ({ setShowPopups, levelId }) => {
       },
     ]);
     // Reset individual variant properties
-    setAnswertext("");
+    setAnswertext('');
   }
 
   useEffect(() => {
-    console.log("asdf", answeroption);
-  }, [answeroption]);
+    if (editingQus) {
+      editingQus.map((itm) => {
+        setSubmitQuestions({
+          question: itm.question,
+          description: itm.description,
+        });
+        // Set answer options
+        setAnsweroption(itm.answeroption);
+
+        // Find the index of the correct answer
+        const correctIndex = itm.answeroption.findIndex((option) => option.iscorrect);
+        // Set the chosen answer for styling
+        setChooseAns(correctIndex);
+      });
+    }
+  }, []);
 
   async function addQuestionToFirebase(description, question, answeroption) {
     try {
       // Get the current data of the document
       const docRef = doc(db, `Test/${levelId}`);
       const docSnap = await getDoc(docRef);
-
       // Get the existing questions array or initialize to empty array if it doesn't exist
       const questions = docSnap.exists() ? docSnap.data().questions || [] : [];
-
       // Add the new question to the existing questions array
       const updatedQuestions = [...questions, { description, question, answeroption }];
 
@@ -65,13 +78,9 @@ const AddQuestionsField = ({ setShowPopups, levelId }) => {
 
       // Update the document with the merged data
       await updateDoc(docRef, updatedData);
-
-      console.log("Document updated successfully");
-      
-      alert("Document updated successfully");
     } catch (error) {
-      console.error("Error updating document: ", error);
-      alert("Error updating document. Please try again.");
+      console.error('Error updating document: ', error);
+      alert('Error updating document. Please try again.');
     }
   }
   function handleInputChange(e) {
@@ -79,29 +88,67 @@ const AddQuestionsField = ({ setShowPopups, levelId }) => {
     let value = e.target.value;
     setSubmitQuestions({ ...submitQuestion, [name]: value });
   }
-  
+
   const onHandleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (submitQuestion.question.trim() === "" || answeroption.length === 0) {
-        alert("Please fill in the question and at least one option.");
+      if (submitQuestion.question.trim() === '' || answeroption.length === 0) {
+        // alert('Please fill in the question and at least one option.');
+        toast.error('Please fill in the question and at least one option', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
         return;
       }
 
-      await addQuestionToFirebase(
-        submitQuestion.question,
-        submitQuestion.description,
-        answeroption
-      );
+      if (editingQus) {
+        const docRef = doc(db, `Test/${LavelId}`);
+        const docSnap = await getDoc(docRef);
+        // Get the existing questions array or initialize to empty array if it doesn't exist
+        const questions = docSnap.exists() ? docSnap.data().questions || [] : [];
+        console.log(docRef);
+        const editedQuestionIndex = questions.findIndex(
+          (qus) => qus.question === editingQus[0].question
+        );
+        console.log(editedQuestionIndex);
+        console.log(questions[0]);
+        if (editedQuestionIndex !== -1) {
+          questions[editedQuestionIndex] = {
+            description: submitQuestion.description,
+            question: submitQuestion.question,
+            answeroption: answeroption,
+          };
+
+          setShowPopups(false);
+          await updateDoc(docRef, { questions: questions });
+          console.log('Document updated successfully');
+          alert('Document updated successfully');
+        } else {
+          throw new Error('Question not found for editing.');
+        }
+      } else {
+        setShowPopups(false);
+        await addQuestionToFirebase(
+          submitQuestion.question,
+          submitQuestion.description,
+          answeroption
+        );
+      }
 
       setSubmitQuestions({
-        description: "",
-        question: "",
+        description: '',
+        question: '',
       });
       setAnsweroption([]);
     } catch (error) {
-      console.error("Error submitting question: ", error);
-      alert("Error submitting question. Please try again.");
+      console.error('Error submitting question: ', error);
+      alert(`Error submitting question: ${error.message}`);
     }
   };
 
@@ -120,15 +167,10 @@ const AddQuestionsField = ({ setShowPopups, levelId }) => {
 
   return (
     <div className="bg-white p-5 rounded-[10px] flex flex-col gap-2.5 w-[490px] max-w-[490px] relative z-50 ">
-      <h2 className="ff_ubuntu font-bold text-lg capitalize text-black">
-        Add Question
-      </h2>
+      <h2 className="ff_ubuntu font-bold text-lg capitalize text-black">Add Question</h2>
       <form onSubmit={onHandleSubmit} className="flex flex-col gap-2.5">
         <div className="flex flex-col gap-1">
-          <label
-            htmlFor="title"
-            className="ff_ubuntu font-normal text-sm text-black capitalize"
-          >
+          <label htmlFor="title" className="ff_ubuntu font-normal text-sm text-black capitalize">
             Question
           </label>
           <input
@@ -136,7 +178,6 @@ const AddQuestionsField = ({ setShowPopups, levelId }) => {
             id="title"
             placeholder="Teething problems | teething troubles"
             type="text"
-            required
             name="question"
             value={submitQuestion.question}
             onChange={handleInputChange}
@@ -150,21 +191,19 @@ const AddQuestionsField = ({ setShowPopups, levelId }) => {
             id="des"
             placeholder="The project went through the usual teething troubles"
             value={submitQuestion.description}
-            onChange={handleInputChange}
-          ></textarea>
+            onChange={handleInputChange}></textarea>
         </div>
         <div className="flex justify-end">
           <div
             onClick={HandleAddAnsweroption}
-            className="ff_ubuntu text-[#ff2000] cursor-pointer font-normal text-sm flex items-center rounded-[10px] outline-none border border-transparent level_add_btn"
-          >
+            className="ff_ubuntu text-[#ff2000] cursor-pointer font-normal text-sm flex items-center rounded-[10px] outline-none border border-transparent level_add_btn">
             + Add Option
           </div>
         </div>
         <div className="max-h-[200px] overflow-y-scroll">
           {answeroption.map((optn, index) => {
             return (
-              <div className="border-t border-black/20 pt-5 mt-5 gap-2.5 ">
+              <div key={index} className="border-t border-black/20 pt-5 mt-5 gap-2.5 ">
                 <label htmlFor="" className="flex flex-col gap-1">
                   <div className="flex justify-between items-center">
                     <h2 className="ff_ubuntu font-normal text-sm text-black capitalize ">
@@ -172,14 +211,9 @@ const AddQuestionsField = ({ setShowPopups, levelId }) => {
                     </h2>
                     <h2
                       onClick={() => handleSetCorrectOption(index)}
-                      className="ff_ubuntu font-normal text-sm text-black capitalize flex gap-1 group"
-                    >
+                      className="ff_ubuntu font-normal text-sm text-black capitalize flex gap-1 group">
                       Correct
-                      {chooseAns === index ? (
-                        <ChooseOptionActiveIcon />
-                      ) : (
-                        <ChooseOptionIcon />
-                      )}
+                      {chooseAns === index ? <ChooseOptionActiveIcon /> : <ChooseOptionIcon />}
                     </h2>
                   </div>
                   <input
@@ -205,22 +239,21 @@ const AddQuestionsField = ({ setShowPopups, levelId }) => {
           </button>
           <button
             type="submit"
-            className="ff_outfit bg-[#FF2000] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 hover:bg-transparent hover:border-[#ff2000] hover:text-[#ff2000] duration-300 group"
-          >
-            <AddItemIcon /> Add
+            className="ff_outfit bg-[#FF2000] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 hover:bg-transparent hover:border-[#ff2000] hover:text-[#ff2000] duration-300 group">
+            <AddItemIcon /> {editingQus ? 'Update' : 'Add'}
           </button>
         </div>
         {addQuestions && (
           <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center z-30">
             <div
               onClick={() => setAddQuestions(false)}
-              className="w-screen h-screen fixed top-0 left-0 bg-black/50"
-            ></div>
+              className="w-screen h-screen fixed top-0 left-0 bg-black/50"></div>
 
             <Level addedQuestionCls="w-[436px] p-5 rounded-[10px] relative z-20" />
           </div>
         )}
       </form>
+      <ToastContainer></ToastContainer>
     </div>
   );
 };
