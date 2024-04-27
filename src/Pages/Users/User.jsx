@@ -153,7 +153,7 @@ const User = () => {
         IeltsOrPte: student.IeltsOrPte,
         School: student.School,
         Age: student.Age,
-        Status: 'New', // Assuming 'Status' is a fixed value
+        Status: student.status, 
       });
     });
 
@@ -433,54 +433,54 @@ const User = () => {
                 <thead>
                   <tr className="!w-full">
                     <th className="border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[99px]">
-                      <p className="flex items-center justify-between">Sr.</p>
+                      <p className="text-center">Sr.</p>
                     </th>
                     <th
                       onClick={() => sorting('name')}
-                      className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[310px]">
-                      <p className="flex items-center justify-between">
+                      className="border  cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[310px]">
+                      <p className="flex items-center justify-center gap-10">
                         Full Name
                         <SortIcon />
                       </p>
                     </th>
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[480px]">
-                      <p className="flex items-center justify-between">Test Score</p>
+                      <p className="text-center">Test Score</p>
                     </th>
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[313px]">
-                      <p className="flex items-center justify-between">Email Address</p>
+                      <p className="text-center">Email Address</p>
                     </th>
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[220px]">
-                      <p className="flex items-center justify-between">Phone Number</p>
+                      <p className="text-center">Phone Number</p>
                     </th>
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[220px]">
-                      <p className="flex items-center justify-between">Alternate Phone Number</p>
+                      <p className="text-center">Alternate Phone Number</p>
                     </th>
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[300px]">
-                      <p className="flex items-center justify-between">Hometown</p>
+                      <p className="text-center">Hometown</p>
                     </th>
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[300px]">
-                      <p className="flex items-center justify-between">
+                      <p className="text-center">
                         Destination for Higher Studies
                       </p>
                     </th>
                     <th
                       // onClick={() => sorting("IeltsOrPte")}
                       className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[200px]">
-                      <p className="flex items-center justify-between">
+                      <p className="text-center">
                         Choice of IELTS or PTE
                         {/* <SortIcon /> */}
                       </p>
                     </th>
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[350px]">
-                      <p className="flex items-center justify-between">
+                      <p className="text-center">
                         School or college they last attended.
                       </p>
                     </th>
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]">
-                      <p className="flex items-center justify-between">Age</p>
+                      <p className="text-center">Age</p>
                     </th>
                     <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]">
-                      <p className="flex items-center justify-between">Status</p>
+                      <p className="text-center">Status</p>
                     </th>
                     <th className="text-center border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[100px]">
                       Action
