@@ -23,31 +23,31 @@ export const QuestiongetterProvider = ({ children }) => {
     }
     QuestionData();
   }, []);
-  const updateQuestionData = (updatedData) => {
-    console.log("updates working", updatedData);
-    if (typeof updatedData === "object" && updatedData.id) {
-      console.log("updaaaaaaaaaaaaa");
-      setQuestionsData((prevData) => {
-        const existingProductIndex = prevData.findIndex(
-          (stu) => stu.id === updatedData.id
-        );
-        if (existingProductIndex !== -1) {
-          const newData = [...prevData];
-          newData[existingProductIndex] = {
-            ...newData[existingProductIndex],
-            ...updatedData,
-          };
-          return newData;
-        } else {
-          return [...prevData, updatedData];
-        }
-      });
-    } else if (Array.isArray(updatedData)) {
-      console.log("upd in else working");
-      // Update the entire array
-      setQuestionsData(updatedData);
-    }
-  };
+    const updateQuestionData = (updatedData) => {
+      console.log("updates working", updatedData);
+      if (typeof updatedData === "object" && updatedData.id) {
+        console.log("updaaaaaaaaaaaaa");
+        setQuestionsData((prevData) => {
+          const existingProductIndex = prevData.findIndex(
+            (stu) => stu.id === updatedData.id
+          );
+          if (existingProductIndex !== -1) {
+            const newData = [...prevData];
+            newData[existingProductIndex] = {
+              ...newData[existingProductIndex],
+              ...updatedData,
+            };
+            return newData;
+          } else {
+            return [...prevData, updatedData];
+          }
+        });
+      } else if (Array.isArray(updatedData)) {
+        console.log("upd in else working");
+        // Update the entire array
+        setQuestionsData(updatedData);
+      }
+    };
 
   const addQuestionaire = async (datas) => {
     try {

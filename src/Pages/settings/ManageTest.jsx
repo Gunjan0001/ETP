@@ -68,7 +68,7 @@ const ManageTest = () => {
             QuestionsData.map((level) => (
               <div key={level.id} className="w-4/12 px-2">
                 <div className="bg-white p-5 rounded-[10px] ">
-                  <Level
+                  <Level  
                     className="fixed top-0  z-10"
                     level={level.Level}
                     title={level.LevelTitle}
@@ -76,7 +76,7 @@ const ManageTest = () => {
                     deleteLevel={() => deleteLevel(level.id)}
                     LevelId={level.id}
                   />
-                  <Questions className="relative z-10" mapData={level.questions} />
+                  <Questions className="relative z-10" mapData={level.questions}  LevelId={level.id} />
                 </div>
               </div>
             ))}

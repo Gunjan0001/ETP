@@ -23,16 +23,16 @@ const AddQuestionnaire = ({hanleclosepopup}) => {
     let value = e.target.value;
     setSubmitQuestions({ ...submitQuestion, [name]: value });
   }
-  const onHandleSubmit = (e) => {
-    e.preventDefault();
-    // setShowPopups(false);
-    // handleChangeQuestion(submitQuestion);
-    setAddQuestions(true);
-    setSubmitQuestions({
-      title: "",
-      des: "",
-    });
-  };
+  // const onHandleSubmit = (e) => {
+  //   e.preventDefault();
+  //   // setShowPopups(false);
+  //   // handleChangeQuestion(submitQuestion);
+  //   setAddQuestions(true);
+  //   setSubmitQuestions({
+  //     title: "",
+  //     des: "",
+  //   });
+  // };
 
   async function handleAddQuestionaire(e) {
     e.preventDefault()

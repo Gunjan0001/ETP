@@ -4,6 +4,9 @@ import AddQuestionsField from "./AddQuestionsField";
 
 const Level = ({ level, addedQuestionCls, deleteLevel ,description,title,LevelId}) => {
   const [showPopups, setShowPopups] = useState(false);
+
+  console.log(LevelId);
+  
   return (
     <>
       <div
@@ -40,7 +43,7 @@ const Level = ({ level, addedQuestionCls, deleteLevel ,description,title,LevelId
                 className="w-screen h-screen fixed top-0 left-0 bg-black/50"
               ></div>
 
-              <AddQuestionsField  setShowPopups={setShowPopups} />
+              <AddQuestionsField  setShowPopups={setShowPopups} levelId = {LevelId} />
             </div>
           )}
         </div>
