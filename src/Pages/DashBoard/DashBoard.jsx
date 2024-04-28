@@ -63,7 +63,6 @@ const DashBoard = () => {
       return new Date().getMonth() === new Date(itm.createdAt).getMonth();
     });
 
-    console.log(filterData.map((v) => v.status));
 
     const closedDeals = filterData.reduce((acc, student) => {
       const _createdAt = new Date(student.createdAt);
@@ -127,7 +126,9 @@ const DashBoard = () => {
   };
   const conversionRateIELTS = calculateConversionRate(totalIELTSLeads, totalSuccessfulIELTSLeads);
   const conversionRatePTE = calculateConversionRate(totalPTELeads, totalSuccessfulPTELeads);
-
+  const currentDate = new Date();
+  const currentMonth = currentDate.toLocaleString('default', { month: 'long' });
+  const currentYear = currentDate.getFullYear();
   if (loading) {
     return <Loader />;
   }
@@ -136,7 +137,9 @@ const DashBoard = () => {
     <>
       <Navbar navbarData="Dashboard" />
       <div className="mt-20 p-8  bg-[#F8F9FA]">
-        <p className="text-lg mb-0  text-[#0047FF] text-end">April 2024</p>
+        <p className="text-lg mb-0 text-[#0047FF] text-end">
+          {currentMonth} {currentYear}
+        </p>
         <div className="flex gap-3 flex-wrap x4l:flex-nowrap w-full mt-5">
           <div className="max-w-[282px] x4l:max-w-full w-full border-2 border-[#00000066] shadow-lg p-5 rounded-md flex justify-center items-center flex-col">
             <img src={adminlogo} alt="logo" />
@@ -271,7 +274,7 @@ const DashBoard = () => {
                 <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[150px]">
                   <p className="flex items-center justify-between">Age</p>
                 </th>
-               
+
                 <th className="text-center border border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[100px]">
                   Action
                 </th>

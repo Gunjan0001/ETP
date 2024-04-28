@@ -13,7 +13,6 @@ export default function UserDetails() {
   const { studentsData } = StudentgetterContext();
   const id = useParams();
   let filterData = studentsData.filter((items) => items.id === id.id);
-  console.log(filterData);
   return (
     <div className="bg-[#F8F9FA] h-full">
       {filterData.map((items) => {

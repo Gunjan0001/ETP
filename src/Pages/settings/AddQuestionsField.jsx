@@ -61,7 +61,7 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
     }
   }, []);
 
-  async function addQuestionToFirebase(description, question, answeroption) {
+  async function addQuestionToFirebase(question,description, answeroption) {
     try {
       // Get the current data of the document
       const docRef = doc(db, `Test/${levelId}`);
@@ -69,7 +69,7 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
       // Get the existing questions array or initialize to empty array if it doesn't exist
       const questions = docSnap.exists() ? docSnap.data().questions || [] : [];
       // Add the new question to the existing questions array
-      const updatedQuestions = [...questions, { description, question, answeroption }];
+      const updatedQuestions = [...questions, { question, description, answeroption }];
 
       const updatedData = {
         ...docSnap.data(),
@@ -142,8 +142,8 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
       }
 
       setSubmitQuestions({
-        description: '',
         question: '',
+        description: '',
       });
       setAnsweroption([]);
     } catch (error) {

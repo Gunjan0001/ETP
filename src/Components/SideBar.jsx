@@ -61,7 +61,9 @@ const SideBar = () => {
         <NavLink
           onClick={() => handeldropdown('')}
           to="users"
-          className="flex items-center p-[10px] svg_color mt-2 text-xs ms-4 rounded-l-[50px] ease-out transition-all duration-300">
+          className={`flex items-center p-[10px] svg_color mt-2 text-xs ms-4 rounded-l-[50px] ease-out transition-all duration-300 ${
+            location.pathname.startsWith('/user') ? 'active' : null
+          }`}>
           <User />
           <h2 className="pl-3 font-normal ff_inter text-lg">Leads</h2>
         </NavLink>
@@ -69,9 +71,7 @@ const SideBar = () => {
           <NavLink
             onClick={() => handeldropdown('settings')}
             to="settings"
-            className="flex items-center justify-between p-[10px] svg_stroke mt-2 text-xs  ms-4 rounded-l-[50px] ease-out transition-all duration-300  fill-current ! hover:fill-white"
-            
-          >
+            className="flex items-center justify-between p-[10px] svg_stroke mt-2 text-xs  ms-4 rounded-l-[50px] ease-out transition-all duration-300  fill-current ! hover:fill-white">
             <div className="flex items-center  ">
               <Settings />
               <h2 className="pl-3 font-normal ff_inter text-lg">Settings</h2>
