@@ -49,9 +49,9 @@ const DashBoard = () => {
     // Filter PTE leads with status "Mark Succeed"
     const successfulPTELeads = studentsData.filter(
       (lead) =>
-        // Check if lead.IeltsOrPte exists
-        lead.IeltsOrPte === Choice.PTE && lead.status.trim() === LeadStatus.SUCCEED
+        lead.IeltsOrPte === Choice.PTE && lead.status && lead.status.trim() === LeadStatus.SUCCEED
     );
+    
 
     // Set the counts
     setTotalSuccessfulIELTSLeads(successfulIELTSLeads.length);

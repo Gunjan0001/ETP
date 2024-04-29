@@ -541,13 +541,13 @@ const User = () => {
                         </td>
 
                         <td className="border w-[100px] relative border-[#D9D9D9] px-4 py-2 ff_inter font-normal text-base  text-[#808080] text-center">
-                          <div className="relative">
+                          <div className="relative z-[9999]">
                             <Menu>
                               <Menu.Button className="inline-flex justify-center w-full cursor-pointer">
                                 <ThreeDotIcon />
                               </Menu.Button>
                               <Menu.Items
-                                className={`absolute right-10 z-20 -top-[20px] mt-2 w-56 origin-top-right max-w-48 rounded-lg border border-solid bg-white border-[#D9D9D9]${
+                                className={`absolute right-10 z-20 -top-[10px] mt-2 w-56 origin-top-right max-w-48 rounded-lg border border-solid bg-white border-[#D9D9D9]${
                                   isLastRow ? 'transform translate-y-[-70%]' : ''
                                 }`}>
                                 <Menu.Item>
