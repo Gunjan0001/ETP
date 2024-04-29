@@ -32,8 +32,7 @@ export const QuestiongetterProvider = ({ children }) => {
       const updatedData = [...QuestionsData[0].questions];
 
       // Remove the item at the specified index
-      console.log(index);
-
+      // console.log(index);
       updatedData.splice(index, 1);
       console.log(updatedData);
       // Update the document with the modified data

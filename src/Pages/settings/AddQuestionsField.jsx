@@ -18,19 +18,19 @@ import { db } from "../../firebase";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "../Loader";
 import { QuestiongetterContext } from "../../Components/Context/TestQuestions";
-const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
+const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editQuestionData, editingIndex, LevelIDD }) => {
   const [chooseAns, setChooseAns] = useState(null);
   const [addQuestions, setAddQuestions] = useState(false);
   const [answeroption, setAnsweroption] = useState([]);
   const [answertext, setAnswertext] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error ,setError]=useState(false)
-  const[errormsg,setErrormsg]=useState("")
+  const [error, setError] = useState(false)
+  const [errormsg, setErrormsg] = useState("")
   const [submitQuestion, setSubmitQuestions] = useState({
     question: "",
     description: "",
   });
-  const { setQuestionsData } = QuestiongetterContext();
+  const { setQuestionsData, updateQuestionData } = QuestiongetterContext();
   const getNextOptionLetter = () => {
     const lastOption = answeroption[answeroption.length - 1];
     if (!lastOption) {
@@ -56,22 +56,19 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
   }
 
   useEffect(() => {
-    if (editingQus) {
-      editingQus.map((itm) => {
-        setSubmitQuestions({
-          question: itm.question,
-          description: itm.description,
-        });
-        // Set answer options
-        setAnsweroption(itm.answeroption);
-
-        // Find the index of the correct answer
-        const correctIndex = itm.answeroption.findIndex(
-          (option) => option.iscorrect
-        );
-        // Set the chosen answer for styling
-        setChooseAns(correctIndex);
+    if (editQuestionData) {
+      setSubmitQuestions({
+        question: editQuestionData.question,
+        description: editQuestionData.description,
       });
+      // Set answer options
+      setAnsweroption(editQuestionData.answeroption);
+      // Find the index of the correct answer
+      const correctIndex = editQuestionData.answeroption.findIndex(
+        (option) => option.iscorrect
+      );
+      // Set the chosen answer for styling
+      setChooseAns(correctIndex);
     }
   }, []);
 
@@ -100,13 +97,17 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
         id: doc.id,
         ...doc.data(),
       }));
-
       setQuestionsData(QuestionList);
     } catch (error) {
       console.error("Error updating document: ", error);
       alert("Error updating document. Please try again.");
     }
+
   }
+
+
+
+
   function handleInputChange(e) {
     setError(false)
     let name = e.target.name;
@@ -114,60 +115,28 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
     setSubmitQuestions({ ...submitQuestion, [name]: value });
   }
 
-  const onHandleSubmit = async (e) => {
-    e.preventDefault();
+
+
+  async function AddnewQuestion(e) {
+    e.preventDefault()
     try {
-      if (editingQus) {
-        console.log(editingQus, "gunjan");
-        setLoading(true);
-        const docRef = doc(db, `Test/${LavelId}`);
-        const docSnap = await getDoc(docRef);
-        // Get the existing questions array or initialize to empty array if it doesn't exist
-        const questions = docSnap.exists()
-          ? docSnap.data().questions || []
-          : [];
-        console.log(docRef);
-        const editedQuestionIndex = questions.findIndex(
-          (qus) => qus.question === editingQus[0].question
-        );
-        console.log(editedQuestionIndex);
-        console.log(questions[0]);
-        if (editedQuestionIndex !== -1) {
-          questions[editedQuestionIndex] = {
-            description: submitQuestion.description,
-            question: submitQuestion.question,
-            answeroption: answeroption,
-          };
-
-          setShowPopups(false);
-          await updateDoc(docRef, { questions: questions });
-          setLoading(false);
-          console.log("Document updated successfully");
-          alert("Document updated successfully");
-        } else {
-          throw new Error("Question not found for editing.");
-        }
-      } else {
-        setLoading(true);
-        
-
-        if (answeroption.length == 0 || answeroption.length < 2) {
-          setError(true)
-          setErrormsg("Please add atleast two option for the question");
-        }
-
-         else  {
-          setError(false)
-          let iscorrect=false
-          for(let i of answeroption){
-            if(i.iscorrect==true){
-              iscorrect=true
-            }
+      setLoading(true);
+      if (answeroption.length == 0 || answeroption.length < 2) {
+        setError(true)
+        setErrormsg("Please add atleast two option for the question");
+      }
+      else {
+        setError(false)
+        let iscorrect = false
+        for (let i of answeroption) {
+          if (i.iscorrect == true) {
+            iscorrect = true
           }
-        if(iscorrect==false){
+        }
+        if (iscorrect == false) {
           setError(true)
           setErrormsg('Please select one option as an answer')
-        }else{
+        } else {
           await addQuestionToFirebase(
             submitQuestion.question,
             submitQuestion.description,
@@ -180,20 +149,55 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
           });
           setAnsweroption([]);
         }
-        }
       }
-     
-      
       setLoading(false);
-    } catch (error) {
+    }
+    catch (error) {
       console.error("Error submitting question: ", error);
       alert(`Error submitting question: ${error.message}`);
     } finally {
       setLoading(false); // Reset loading state after submission
     }
-  };
+  }
 
-  // Function to handle setting the correct option
+
+
+
+
+  async function UpdateNewQuestion(e) {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const docRef = doc(db, `Test/${LevelIDD}`);
+      const docSnap = await getDoc(docRef);
+      // Get the existing questions array or initialize to empty array if it doesn't exist
+      const questions = docSnap.exists() ? docSnap.data().questions || [] : [];
+      if (editingIndex !== -1 && editingIndex < questions.length) {
+        questions[editingIndex] = {
+          description: submitQuestion.description,
+          question: submitQuestion.question,
+          answeroption: answeroption,
+        };
+        setShowPopups(false);
+        // Update the Firestore document with the modified questions array
+        await updateDoc(docRef, { questions: questions });
+        const snapshot = await getDocs(collection(db, "Test"));
+        const QuestionList = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setQuestionsData(QuestionList);
+        setLoading(false);
+        console.log("Document updated successfully")
+      } else {
+        throw new Error("Invalid question index.");
+      }
+    } catch (error) {
+      setLoading(false)
+      console.log("Error in update Data");
+    }
+  }
+
   const handleSetCorrectOption = (index) => {
     const updatedOptions = answeroption.map((option, i) => {
       if (i === index) {
@@ -210,11 +214,11 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
   }
   return (
     <div className="bg-white p-5 rounded-[10px] flex flex-col gap-2.5 w-[490px] max-w-[490px] relative z-50 ">
-      {error && <small style={{color:'red'}}> Error : {errormsg}</small>}
+      {error && <small style={{ color: 'red' }}> Error : {errormsg}</small>}
       <h2 className="ff_ubuntu font-bold text-lg capitalize text-black">
         Add Question
       </h2>
-      <form onSubmit={onHandleSubmit} className="flex flex-col gap-2.5">
+      <form className="flex flex-col gap-2.5">
         <div className="flex flex-col gap-1">
           <label
             htmlFor="title"
@@ -296,15 +300,20 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
           })}
         </div>
         <div className="flex justify-end gap-2 border-t border-black/20 pt-5 mt-5 ">
-          <button onClick={handleReset} className="ff_outfit bg-[#8C8C8C] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 ">
-            <ResetIcon  /> Reset
-          </button>
-          <button
-            type="submit"
+          {!editQuestionData && <button className="ff_outfit bg-[#8C8C8C] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 ">
+            <ResetIcon /> Reset
+          </button>}
+          {editQuestionData ? <button
+            onClick={(e) => UpdateNewQuestion(e)}
             className="ff_outfit bg-[#FF2000] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 hover:bg-transparent hover:border-[#ff2000] hover:text-[#ff2000] duration-300 group"
           >
-            <AddItemIcon /> {editingQus ? "Update" : "Add"}
-          </button>
+            <AddItemIcon /> {"update"}
+          </button> : <button
+            onClick={(e) => AddnewQuestion(e)}
+            className="ff_outfit bg-[#FF2000] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 hover:bg-transparent hover:border-[#ff2000] hover:text-[#ff2000] duration-300 group"
+          >
+            <AddItemIcon /> {"Add"}
+          </button>}
         </div>
         {addQuestions && (
           <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center z-30">
@@ -312,7 +321,6 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
               onClick={() => setAddQuestions(false)}
               className="w-screen h-screen fixed top-0 left-0 bg-black/50"
             ></div>
-
             <Level addedQuestionCls="w-[436px] p-5 rounded-[10px] relative z-20" />
           </div>
         )}

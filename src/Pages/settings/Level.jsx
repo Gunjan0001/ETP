@@ -86,7 +86,6 @@ const Level = ({
                 onClick={() => setShowPopups(false)}
                 className="w-screen h-screen fixed top-0 left-0 bg-black/50"
               ></div>
-
               <AddQuestionsField
                 setShowPopups={setShowPopups}
                 levelId={LevelId}
