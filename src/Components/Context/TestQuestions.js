@@ -107,6 +107,7 @@ export const QuestiongetterProvider = ({ children }) => {
         DeleteQuestionarie,
         handleDelete,
         loading,
+        setQuestionsData
       }}
     >
       {" "}

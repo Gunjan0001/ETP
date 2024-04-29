@@ -6,10 +6,18 @@ import {
   ResetIcon,
 } from "../../Components/Icons";
 import Level from "./Level";
-import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "../Loader";
+import { QuestiongetterContext } from "../../Components/Context/TestQuestions";
 const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
   const [chooseAns, setChooseAns] = useState(null);
   const [addQuestions, setAddQuestions] = useState(false);
@@ -20,6 +28,7 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
     question: "",
     description: "",
   });
+  const { setQuestionsData } = QuestiongetterContext();
   const getNextOptionLetter = () => {
     const lastOption = answeroption[answeroption.length - 1];
     if (!lastOption) {
@@ -84,6 +93,13 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
 
       // Update the document with the merged data
       await updateDoc(docRef, updatedData);
+      const snapshot = await getDocs(collection(db, "Test"));
+      const QuestionList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setQuestionsData(QuestionList);
     } catch (error) {
       console.error("Error updating document: ", error);
       alert("Error updating document. Please try again.");
@@ -147,16 +163,29 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
         }
       } else {
         setLoading(true);
-        
-       
 
-        await addQuestionToFirebase(
-          submitQuestion.question,
-          submitQuestion.description,
-          answeroption
-        );
+        if (answeroption.length == 0 || answeroption.length <= 2) {
+          alert("please add atleast two option for the question");
+        }
+
+         else  {
+          let iscorrect=false
+          for(let i of answeroption){
+            if(i.iscorrect==true){
+              iscorrect=true
+            }
+          }
+        if(iscorrect==false){
+          alert('Please select one option as an answere')
+        }else{
+          await addQuestionToFirebase(
+            submitQuestion.question,
+            submitQuestion.description,
+            answeroption
+          )
+        }
+        }
       }
-
       setSubmitQuestions({
         question: "",
         description: "",
@@ -257,6 +286,7 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
                   </div>
                   <input
                     type="text"
+                    required
                     className="border-none outline-none p-2.5 text-black/50 bg-[#EEEEEE] text-base rounded-[10px] h-[44px] resize-none w-full"
                     value={optn.answertext}
                     onChange={(e) =>
