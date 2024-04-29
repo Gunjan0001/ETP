@@ -213,7 +213,7 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editQuestionData, 
     return <Loader />;
   }
   return (
-    <div className="bg-white p-5 rounded-[10px] flex flex-col gap-2.5 w-[490px] max-w-[490px] relative z-50 ">
+    <div className="bg-white p-5 rounded-[10px] flex flex-col gap-2.5 w-[490px] max-w-[490px] relative z-50 z-[999]">
       {error && <small style={{ color: 'red' }}> Error : {errormsg}</small>}
       <h2 className="ff_ubuntu font-bold text-lg capitalize text-black">
         Add Question

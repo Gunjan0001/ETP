@@ -37,7 +37,7 @@ const Questions = ({ mapData, LevelId }) => {
    return <Loader />
   }
   return (
-    <div className="overflow-y-scroll Question_height relative z-10">
+    <div className="overflow-y-scroll Question_height relative ">
       {mapData && mapData.length > 0 && mapData.map((data, index) => {
         // console.log(data);
         return (
