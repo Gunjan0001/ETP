@@ -1,23 +1,28 @@
-import React, { useContext, useEffect, useState } from 'react';
-import Navbar from '../../Components/Navbar';
-import adminlogo from '../../assets/images/png/adminlogo.png';
-import { StudentgetterContext } from '../../Components/Context/AllStudentsData';
-import { type } from '@testing-library/user-event/dist/type';
-import { Menu } from '@headlessui/react';
-import Loader from '../../Pages/Loader';
-import { LineChart } from '@mui/x-charts';
-import { NotInterestedIcon, SuccedIcon, ThreeDotIcon, ViewIcon } from '../../Components/Icons';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from "react";
+import Navbar from "../../Components/Navbar";
+import adminlogo from "../../assets/images/png/adminlogo.png";
+import { StudentgetterContext } from "../../Components/Context/AllStudentsData";
+import { type } from "@testing-library/user-event/dist/type";
+import { Menu } from "@headlessui/react";
+import Loader from "../../Pages/Loader";
+import { LineChart } from "@mui/x-charts";
+import {
+  NotInterestedIcon,
+  SuccedIcon,
+  ThreeDotIcon,
+  ViewIcon,
+} from "../../Components/Icons";
+import { Link } from "react-router-dom";
 
 const Choice = {
-  IELTS: 'IELTS',
-  PTE: 'PTE',
+  IELTS: "IELTS",
+  PTE: "PTE",
 };
 
 const LeadStatus = {
-  NEW: 'NEW',
-  SUCCEED: 'SUCCEED',
-  NOT_INTERESTED: 'NOT INTERESTED',
+  NEW: "NEW",
+  SUCCEED: "SUCCEED",
+  NOT_INTERESTED: "NOT INTERESTED",
 };
 
 const DashBoard = () => {
@@ -28,12 +33,12 @@ const DashBoard = () => {
   // Filter studentsArray to get IELTS and PTE leads
   const ieltsLeads = studentsData.filter((student) => {
     // Check if student.IeltsOrPte exists and is not undefined before calling toLowerCase()
-    return student.IeltsOrPte && student.IeltsOrPte.toLowerCase() === 'ielts';
+    return student.IeltsOrPte && student.IeltsOrPte.toLowerCase() === "ielts";
   });
 
   const pteLeads = studentsData.filter((student) => {
     // Check if student.IeltsOrPte exists and is not undefined before calling toLowerCase()
-    return student.IeltsOrPte && student.IeltsOrPte.toLowerCase() === 'pte';
+    return student.IeltsOrPte && student.IeltsOrPte.toLowerCase() === "pte";
   });
 
   // Count the number of IELTS and PTE leads
@@ -43,15 +48,17 @@ const DashBoard = () => {
   useEffect(() => {
     // Filter IELTS leads with status "Mark Succeed"
     const successfulIELTSLeads = studentsData.filter(
-      (lead) => lead.IeltsOrPte === Choice.IELTS && lead.status === LeadStatus.SUCCEED
+      (lead) =>
+        lead.IeltsOrPte === Choice.IELTS && lead.status === LeadStatus.SUCCEED
     );
 
     // Filter PTE leads with status "Mark Succeed"
     const successfulPTELeads = studentsData.filter(
       (lead) =>
-        lead.IeltsOrPte === Choice.PTE && lead.status && lead.status.trim() === LeadStatus.SUCCEED
+        lead.IeltsOrPte === Choice.PTE &&
+        lead.status &&
+        lead.status.trim() === LeadStatus.SUCCEED
     );
-    
 
     // Set the counts
     setTotalSuccessfulIELTSLeads(successfulIELTSLeads.length);
@@ -62,7 +69,6 @@ const DashBoard = () => {
     let filterData = studentsData.filter((itm) => {
       return new Date().getMonth() === new Date(itm.createdAt).getMonth();
     });
-
 
     const closedDeals = filterData.reduce((acc, student) => {
       const _createdAt = new Date(student.createdAt);
@@ -109,7 +115,9 @@ const DashBoard = () => {
     setStudentData(graphData);
   }, [studentsData]); // Run this effect whenever studentsData changes
 
-  const totalsucessleads = studentsData.filter((lead) => lead.status === LeadStatus.SUCCEED);
+  const totalsucessleads = studentsData.filter(
+    (lead) => lead.status === LeadStatus.SUCCEED
+  );
   // Function to calculate the percentage
   const calculatePercentage = (correctAnswers, totalQuestions) => {
     if (totalQuestions === 0) {
@@ -124,10 +132,16 @@ const DashBoard = () => {
     }
     return ((totalSuccessfulLeads / totalLeads) * 100).toFixed(2);
   };
-  const conversionRateIELTS = calculateConversionRate(totalIELTSLeads, totalSuccessfulIELTSLeads);
-  const conversionRatePTE = calculateConversionRate(totalPTELeads, totalSuccessfulPTELeads);
+  const conversionRateIELTS = calculateConversionRate(
+    totalIELTSLeads,
+    totalSuccessfulIELTSLeads
+  );
+  const conversionRatePTE = calculateConversionRate(
+    totalPTELeads,
+    totalSuccessfulPTELeads
+  );
   const currentDate = new Date();
-  const currentMonth = currentDate.toLocaleString('default', { month: 'long' });
+  const currentMonth = currentDate.toLocaleString("default", { month: "long" });
   const currentYear = currentDate.getFullYear();
   if (loading) {
     return <Loader />;
@@ -150,11 +164,15 @@ const DashBoard = () => {
             <div className="border-t border-t-[#00000033] flex py-2 w-full justify-evenly gap-10">
               <p className="text-center mb-0">
                 IELTS<br></br>
-                <span className="font-bold text-[32px] text-[#FF2000]">{totalIELTSLeads}</span>
+                <span className="font-bold text-[32px] text-[#FF2000]">
+                  {totalIELTSLeads}
+                </span>
               </p>
               <p className="text-center mb-0">
                 PTE<br></br>
-                <span className="font-bold text-[32px] text-[#FF2000]">{totalPTELeads}</span>
+                <span className="font-bold text-[32px] text-[#FF2000]">
+                  {totalPTELeads}
+                </span>
               </p>
             </div>
           </div>
@@ -212,16 +230,15 @@ const DashBoard = () => {
             </div>
           </div>
           <div className="catt">
-  <LineChart
-    xAxis={[{ data: studentData.map((e) => e.date) }]}
-    series={[
-      { data: studentData.map((e) => e.count), color: 'red' }, // Set red color for 'count' series
-      { data: studentData.map((e) => e.closed), color: 'green' }, // Set green color for 'closed' series
-    ]}
-    height={373}
-  />
-</div>
-
+            <LineChart
+              xAxis={[{ data: studentData.map((e) => e.date) }]}
+              series={[
+                { data: studentData.map((e) => e.count), color: "red" }, // Set red color for 'count' series
+                { data: studentData.map((e) => e.closed), color: "green" }, // Set green color for 'closed' series
+              ]}
+              height={373}
+            />
+          </div>
         </div>
         <p className="mb-0 font-medium my-4">Recently Closed</p>
         <div className="overflow-x-auto table_hight2 mt-8">
@@ -233,23 +250,32 @@ const DashBoard = () => {
                 </th>
                 <th
                   // onClick={() => sorting("name")}
-                  className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[310px]">
+                  className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[310px]"
+                >
                   <p className="flex items-center justify-between">
                     Full Name
                     {/* <SortIcon /> */}
                   </p>
                 </th>
                 <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[480px]">
-                  <p className="flex items-center justify-between">Test Score</p>
+                  <p className="flex items-center justify-between">
+                    Test Score
+                  </p>
                 </th>
                 <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[313px]">
-                  <p className="flex items-center justify-between">Email Address</p>
+                  <p className="flex items-center justify-between">
+                    Email Address
+                  </p>
                 </th>
                 <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[220px]">
-                  <p className="flex items-center justify-between">Phone Number</p>
+                  <p className="flex items-center justify-between">
+                    Phone Number
+                  </p>
                 </th>
                 <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[220px]">
-                  <p className="flex items-center justify-between">Alternate Phone Number</p>
+                  <p className="flex items-center justify-between">
+                    Alternate Phone Number
+                  </p>
                 </th>
                 <th className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[300px]">
                   <p className="flex items-center justify-between">Hometown</p>
@@ -261,7 +287,8 @@ const DashBoard = () => {
                 </th>
                 <th
                   // onClick={() => sorting("IeltsOrPte")}
-                  className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[200px]">
+                  className="border cursor-pointer border-[#D9D9D9] bg-white ff_inter font-normal text-base text-[#FF0000] px-4 py-2 w-[200px]"
+                >
                   <p className="flex items-center justify-between">
                     Choice of IELTS or PTE
                     {/* <SortIcon /> */}
@@ -286,7 +313,10 @@ const DashBoard = () => {
                 const isLastRow = index === totalsucessleads.length - 1;
                 // // Calculate the percentages for each level
                 const levelPercentages = value.scores.map((score) =>
-                  calculatePercentage(score.correctAnswers, score.totalQuestions)
+                  calculatePercentage(
+                    score.correctAnswers,
+                    score.totalQuestions
+                  )
                 );
                 return (
                   <tr key={index} className="!w-full">
@@ -339,14 +369,18 @@ const DashBoard = () => {
                           </Menu.Button>
                           <Menu.Items
                             className={`absolute right-10 z-20 -top-[20px] mt-2 w-56 origin-top-right max-w-48 rounded-lg border border-solid bg-white border-[#D9D9D9]${
-                              isLastRow ? 'transform translate-y-[-70%]' : ''
-                            }`}>
+                              isLastRow ? "transform translate-y-[-70%]" : ""
+                            }`}
+                          >
                             <Menu.Item>
                               <Link
-                                // to={`/users/veiwprofile/${value.id}`}
-                                className="flex items-center py-3 px-5 gap-4 cursor-pointer">
+                                  to={`/userprofile/${value.id}`}
+                                className="flex items-center py-3 px-5 gap-4 cursor-pointer"
+                              >
                                 <ViewIcon />
-                                <p className="ff_inter font-normal text-base mb-0 ">View Profile</p>
+                                <p className="ff_inter font-normal text-base mb-0 ">
+                                  View Profile
+                                </p>
                               </Link>
                             </Menu.Item>
                           </Menu.Items>

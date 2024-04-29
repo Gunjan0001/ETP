@@ -21,7 +21,7 @@ export default function UserDetails() {
             <Navbar navbarData={items.name} startData="Leads / Manage Leads /" data={items.name} />;
             <div className="px-[30px] ff_ubuntu pb-[30px]">
               <div className="flex justify-end mt-[104px] gap-5">
-                {items.status === LeadStatus.NEW ||
+                {/* {items.status === LeadStatus.NEW ||
                   (items.status === undefined && (
                     <button className="text-base font-normal p-[10px] text-[#FF0000] bg-[#FF000026] rounded-[5px]">
                       Not Interested
@@ -31,7 +31,7 @@ export default function UserDetails() {
                   <button className="text-base font-normal p-[10px] text-[#0B8700] bg-[#10C50026] rounded-[5px]">
                     Mark Succeed
                   </button>
-                ) : null}
+                ) : null} */}
               </div>
               <div className="flex flex-col  x2l:flex-row gap-5 mt-5">
                 <div className="w-full x2l:w-[58.33%] p-5 bg-white rounded-[10px]">

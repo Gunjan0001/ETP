@@ -4,7 +4,7 @@ import profile from '../assets/images/svg/profile.svg';
 const Navbar = (props) => {
   return (
     <>
-      <div className=" w-full p-[30px] border-b border-gray-300 bg-white  fixed  top-0 navbar_width">
+      <div className=" w-full p-[30px] border-b border-gray-300 bg-white  z-50 fixed  top-0 navbar_width">
         <div className="flex items-center">
           <div className="flex items-center justify-between w-full ">
             <div>
