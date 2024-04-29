@@ -116,7 +116,6 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editQuestionData, 
   }
 
 
-
   async function AddnewQuestion(e) {
     e.preventDefault()
     try {
@@ -313,7 +312,8 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editQuestionData, 
             className="ff_outfit bg-[#FF2000] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 hover:bg-transparent hover:border-[#ff2000] hover:text-[#ff2000] duration-300 group"
           >
             <AddItemIcon /> {"Add"}
-          </button>}
+          </button>
+          }
         </div>
         {addQuestions && (
           <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center z-30">

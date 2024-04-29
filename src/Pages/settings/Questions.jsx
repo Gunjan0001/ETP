@@ -78,7 +78,7 @@ const Questions = ({ mapData, LevelId }) => {
         );
       })}
       {showAddQuestionnaire && (
-        <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center z-50">
+        <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center z-40">
           <div onClick={() => setShowAddQuestionnaire(false)}
             className="w-screen h-screen fixed top-0 left-0 bg-black/50"
           ></div>
