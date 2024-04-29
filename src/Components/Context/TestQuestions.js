@@ -7,7 +7,7 @@ export const QuestiongetterContext = () => {
 };
 export const QuestiongetterProvider = ({ children }) => {
   const [QuestionsData, setQuestionsData] = useState([]);
-  const [loading, setLoading]=useState(false)
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     async function QuestionData(doc) {
       try {
@@ -27,7 +27,7 @@ export const QuestiongetterProvider = ({ children }) => {
 
   const handleDelete = async (index, LevelId) => {
     try {
-      setLoading(true)
+      setLoading(true);
       // Shallow copy of the mapData array
       const updatedData = [...QuestionsData[0].questions];
 
@@ -46,13 +46,14 @@ export const QuestiongetterProvider = ({ children }) => {
       }));
 
       setQuestionsData(QuestionList);
-      setLoading(false)
+      setLoading(false);
       console.log("Successfully deleted document with index:", index);
     } catch (error) {
       console.error("Error deleting document:", error.message);
     }
   };
   const updateQuestionData = (updatedData) => {
+    setLoading(true)
     // console.log("updates working", updateQuestionData);
     if (typeof updatedData === "object" && updatedData.id) {
       // console.log("updaaaaaaaaaaaaa");
@@ -76,20 +77,23 @@ export const QuestiongetterProvider = ({ children }) => {
       // Update the entire array
       setQuestionsData(updatedData);
     }
+    setLoading(false)
   };
 
   const addQuestionaire = async (datas) => {
     try {
-      setLoading(true)
+      setLoading(true);
       updateQuestionData(datas);
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
   };
   const DeleteQuestionarie = async (id) => {
     try {
+      setLoading(true);
       setQuestionsData((prevData) => prevData.filter((faqs) => faqs.id !== id));
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -102,7 +106,7 @@ export const QuestiongetterProvider = ({ children }) => {
         addQuestionaire,
         DeleteQuestionarie,
         handleDelete,
-       loading
+        loading,
       }}
     >
       {" "}
