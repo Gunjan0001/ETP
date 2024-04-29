@@ -82,7 +82,7 @@ export const StudentgetterProvider = ({ children }) => {
       value={{
         studentsData,
         updateStudentData,
-        // updateStatusonFirebase,
+        updateStatusonFirebase,
         loading,
       }}
     >

@@ -114,7 +114,7 @@ body{
 }
 
 .table_hight {
-  max-height: calc(100vh - 240px);; /* Add a maximum height to enable vertical scrolling */
+  height: calc(100vh - 240px);; /* Add a maximum height to enable vertical scrolling */
   overflow-y: auto; /* Enable vertical scrolling */
 }
 .table_hight2{
@@ -134,4 +134,7 @@ thead{
 }
 .Question_height {
   height: calc(100vh - 320px) !important;
+}
+.table_height{
+  height: calc(100vh - 200px);
 }
