@@ -14,7 +14,7 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
   const [addQuestions, setAddQuestions] = useState(false);
   const [answeroption, setAnsweroption] = useState([]);
   const [answertext, setAnswertext] = useState('');
-
+const [loading, setLoading]=useState(false)
   const [submitQuestion, setSubmitQuestions] = useState({
     question: '',
     description: '',
@@ -92,6 +92,7 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
   const onHandleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       if (submitQuestion.question.trim() === '' || answeroption.length === 0) {
         // alert('Please fill in the question and at least one option.');
         toast.error('Please fill in the question and at least one option', {
@@ -104,6 +105,7 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
           progress: undefined,
           theme: 'light',
         });
+        setLoading(false);
         return;
       }
 
@@ -149,6 +151,8 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
     } catch (error) {
       console.error('Error submitting question: ', error);
       alert(`Error submitting question: ${error.message}`);
+    }finally {
+      setLoading(false); // Reset loading state after submission
     }
   };
 

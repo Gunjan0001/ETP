@@ -1,8 +1,8 @@
 <svg width="545" height="635" viewBox="0 0 545 635" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_b_20_299)">
 <rect width="545" height="635" rx="15" fill="#555555" fill-opacity="0.22"/>
-<rect x="2" y="2" width="541" height="631" rx="13" stroke="url(#paint0_linear_20_299)" stroke-width="4"/>
-<rect x="2" y="2" width="541" height="631" rx="13" stroke="url(#paint1_linear_20_299)" stroke-width="4"/>
+<rect x="2" y="2" width="541" height="631" rx="13" stroke="url(#paint0_linear_20_299)" strokeWidth="4"/>
+<rect x="2" y="2" width="541" height="631" rx="13" stroke="url(#paint1_linear_20_299)" strokeWidth="4"/>
 </g>
 <defs>
 <filter id="filter0_b_20_299" x="-12" y="-12" width="569" height="659" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">

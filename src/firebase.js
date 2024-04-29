@@ -1,25 +1,20 @@
-// Import the functions you need from the SDKs you need
+
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getAuth } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCBCEPFzTEJb3whcrSgy-HhVmSXYPkTdqU",
-  authDomain: "educa-a135e.firebaseapp.com",
-  projectId: "educa-a135e",
-  storageBucket: "educa-a135e.appspot.com",
-  messagingSenderId: "533823708894",
-  appId: "1:533823708894:web:821d65085b7d757f5d2c4f",
-  measurementId: "G-SM286BTS31"
+  apiKey: "AIzaSyDx9FulrMGu2CFXKsQ-VtcRqBIEewFpTaI",
+  authDomain: "english-74388.firebaseapp.com",
+  projectId: "english-74388",
+  storageBucket: "english-74388.appspot.com",
+  messagingSenderId: "201983085608",
+  appId: "1:201983085608:web:e5c81a950f18040434791d"
 };
 
-// // Initialize Firebase
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);

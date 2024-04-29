@@ -37,8 +37,10 @@ const ManageTest = () => {
   };
   const editLevel = (title, description, lavelId) => {
     setShowPopups(true);
+    setloading(true)
     setEditData({ title, description });
     setLevelId(lavelId); // Set title and description in state
+    setloading(false)
   };
   if (loading) {
     return <Loader></Loader>;

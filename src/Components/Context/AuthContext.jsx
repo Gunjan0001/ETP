@@ -6,12 +6,10 @@ import {
 } from "firebase/auth";
 import { auth } from "../../firebase";
 import Loader from "../../Pages/Loader";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import CustomToaster from '../CustomToaster';
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CustomToaster from "../CustomToaster";
 const authContext = createContext();
-
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState("");
   const [loading, setLoading] = useState(true);
@@ -20,7 +18,7 @@ export function UserAuthContextProvider({ children }) {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        toast.success('Login successful', {
+        toast.success("Login successful", {
           position: "top-right",
           hideProgressBar: false,
           closeOnClick: true,
@@ -33,20 +31,23 @@ export function UserAuthContextProvider({ children }) {
         return userCredential;
       })
       .catch((error) => {
-        if (error.code === 'auth/network-request-failed') {
+        if (error.code === "auth/network-request-failed") {
           // Network connection failed
-          toast.error('Network connection error. Please check your internet connection and try again.', {
-            position: "top-right",
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          toast.error(
+            "Network connection error. Please check your internet connection and try again.",
+            {
+              position: "top-right",
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            }
+          );
         } else {
           // Other authentication-related errors
-          toast.error('Invalid Email or Password', {
+          toast.error("Invalid Email or Password", {
             position: "top-right",
             hideProgressBar: false,
             closeOnClick: true,
@@ -59,12 +60,11 @@ export function UserAuthContextProvider({ children }) {
         throw error;
       });
   }
-  
 
   function logoutUser() {
     return signOut(auth)
       .then(() => {
-        toast.success('Logout successful', {
+        toast.success("Logout successful", {
           position: "top-right",
           hideProgressBar: false,
           closeOnClick: true,
@@ -75,7 +75,7 @@ export function UserAuthContextProvider({ children }) {
         });
       })
       .catch((error) => {
-        toast.error('Logout failed', {
+        toast.error("Logout failed", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,

@@ -1,16 +1,17 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { getDocs, collection } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { createContext, useContext, useState, useEffect } from "react";
+import { getDocs, collection, doc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 const TestQuestionContext = createContext();
 export const QuestiongetterContext = () => {
   return useContext(TestQuestionContext);
 };
 export const QuestiongetterProvider = ({ children }) => {
   const [QuestionsData, setQuestionsData] = useState([]);
+  const [loading, setLoading]=useState(false)
   useEffect(() => {
     async function QuestionData(doc) {
       try {
-        const snapshot = await getDocs(collection(db, 'Test'));
+        const snapshot = await getDocs(collection(db, "Test"));
         const QuestionList = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -18,17 +19,47 @@ export const QuestiongetterProvider = ({ children }) => {
 
         setQuestionsData(QuestionList);
       } catch (error) {
-        console.log('error in fetching Questions Data', error);
+        console.log("error in fetching Questions Data", error);
       }
     }
     QuestionData();
-  }, [QuestionsData]);
+  }, []);
+
+  const handleDelete = async (index, LevelId) => {
+    try {
+      setLoading(true)
+      // Shallow copy of the mapData array
+      const updatedData = [...QuestionsData[0].questions];
+
+      // Remove the item at the specified index
+      console.log(index);
+
+      updatedData.splice(index, 1);
+      console.log(updatedData);
+      // Update the document with the modified data
+      const docRef = doc(db, "Test", LevelId);
+      await updateDoc(docRef, { questions: updatedData });
+      const snapshot = await getDocs(collection(db, "Test"));
+      const QuestionList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setQuestionsData(QuestionList);
+      setLoading(false)
+      console.log("Successfully deleted document with index:", index);
+    } catch (error) {
+      console.error("Error deleting document:", error.message);
+    }
+  };
   const updateQuestionData = (updatedData) => {
-    // console.log('updates working', updatedData);
-    if (typeof updatedData === 'object' && updatedData.id) {
-      // console.log('updaaaaaaaaaaaaa');
+    // console.log("updates working", updateQuestionData);
+    if (typeof updatedData === "object" && updatedData.id) {
+      // console.log("updaaaaaaaaaaaaa");
       setQuestionsData((prevData) => {
-        const existingProductIndex = prevData.findIndex((stu) => stu.id === updatedData.id);
+        const existingProductIndex = prevData.findIndex(
+          (stu) => stu.id === updatedData.id
+        );
         if (existingProductIndex !== -1) {
           const newData = [...prevData];
           newData[existingProductIndex] = {
@@ -41,7 +72,7 @@ export const QuestiongetterProvider = ({ children }) => {
         }
       });
     } else if (Array.isArray(updatedData)) {
-      console.log('upd in else working');
+      console.log("upd in else working");
       // Update the entire array
       setQuestionsData(updatedData);
     }
@@ -49,12 +80,13 @@ export const QuestiongetterProvider = ({ children }) => {
 
   const addQuestionaire = async (datas) => {
     try {
+      setLoading(true)
       updateQuestionData(datas);
+      setLoading(false)
     } catch (error) {
       console.error(error);
     }
   };
-
   const DeleteQuestionarie = async (id) => {
     try {
       setQuestionsData((prevData) => prevData.filter((faqs) => faqs.id !== id));
@@ -69,8 +101,12 @@ export const QuestiongetterProvider = ({ children }) => {
         updateQuestionData,
         addQuestionaire,
         DeleteQuestionarie,
-      }}>
-      {children}
+        handleDelete,
+       loading
+      }}
+    >
+      {" "}
+      {children}{" "}
     </TestQuestionContext.Provider>
   );
 };

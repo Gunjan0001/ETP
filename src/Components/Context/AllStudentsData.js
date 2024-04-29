@@ -34,9 +34,9 @@ export const StudentgetterProvider = ({ children }) => {
         setLoading(false); // Stop loading regardless of success or failure
       }
     };
-
     fetchStudentsData(); // Fetch data when component mounts
   }, []);
+
 
   const updateStudentData = (updatedData) => {
     if (typeof updatedData === "object" && updatedData.id) {
@@ -60,7 +60,6 @@ export const StudentgetterProvider = ({ children }) => {
       setStudentsData(updatedData);
     }
   };
-
   const updateStatusonFirebase = async (docID, status) => {
     setLoading(true); // Start loading
     try {
@@ -78,13 +77,12 @@ export const StudentgetterProvider = ({ children }) => {
       setLoading(false); // Stop loading regardless of success or failure
     }
   };
-
   return (
     <AllStudentGetterContext.Provider
       value={{
         studentsData,
         updateStudentData,
-        updateStatusonFirebase,
+        // updateStatusonFirebase,
         loading,
       }}
     >
