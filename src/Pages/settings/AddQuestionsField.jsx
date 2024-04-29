@@ -171,6 +171,7 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editQuestionData, 
       const docSnap = await getDoc(docRef);
       // Get the existing questions array or initialize to empty array if it doesn't exist
       const questions = docSnap.exists() ? docSnap.data().questions || [] : [];
+      console.log(questions)
       if (editingIndex !== -1 && editingIndex < questions.length) {
         questions[editingIndex] = {
           description: submitQuestion.description,
@@ -193,7 +194,7 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editQuestionData, 
       }
     } catch (error) {
       setLoading(false)
-      console.log("Error in update Data");
+      console.log("Error in update Data",error);
     }
   }
 
@@ -212,7 +213,7 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editQuestionData, 
     return <Loader />;
   }
   return (
-    <div className="bg-white p-5 rounded-[10px] flex flex-col gap-2.5 w-[490px] max-w-[490px] relative z-50 ">
+    <div className="bg-white p-5 rounded-[10px] flex flex-col gap-2.5 w-[490px] max-w-[490px] relative  z-[999]">
       {error && <small style={{ color: 'red' }}> Error : {errormsg}</small>}
       <h2 className="ff_ubuntu font-bold text-lg capitalize text-black">
         Add Question
@@ -299,9 +300,9 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editQuestionData, 
           })}
         </div>
         <div className="flex justify-end gap-2 border-t border-black/20 pt-5 mt-5 ">
-          {!editQuestionData && <button className="ff_outfit bg-[#8C8C8C] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 ">
+          {/* {!editQuestionData && <button className="ff_outfit bg-[#8C8C8C] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 ">
             <ResetIcon /> Reset
-          </button>}
+          </button>} */}
           {editQuestionData ? <button
             onClick={(e) => UpdateNewQuestion(e)}
             className="ff_outfit bg-[#FF2000] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 hover:bg-transparent hover:border-[#ff2000] hover:text-[#ff2000] duration-300 group"
