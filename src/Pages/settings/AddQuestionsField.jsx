@@ -300,9 +300,9 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editQuestionData, 
           })}
         </div>
         <div className="flex justify-end gap-2 border-t border-black/20 pt-5 mt-5 ">
-          {!editQuestionData && <button className="ff_outfit bg-[#8C8C8C] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 ">
+          {/* {!editQuestionData && <button className="ff_outfit bg-[#8C8C8C] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 ">
             <ResetIcon /> Reset
-          </button>}
+          </button>} */}
           {editQuestionData ? <button
             onClick={(e) => UpdateNewQuestion(e)}
             className="ff_outfit bg-[#FF2000] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 hover:bg-transparent hover:border-[#ff2000] hover:text-[#ff2000] duration-300 group"
