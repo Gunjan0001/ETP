@@ -24,6 +24,8 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
   const [answeroption, setAnsweroption] = useState([]);
   const [answertext, setAnswertext] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error ,setError]=useState(false)
+  const[errormsg,setErrormsg]=useState("")
   const [submitQuestion, setSubmitQuestions] = useState({
     question: "",
     description: "",
@@ -106,6 +108,7 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
     }
   }
   function handleInputChange(e) {
+    setError(false)
     let name = e.target.name;
     let value = e.target.value;
     setSubmitQuestions({ ...submitQuestion, [name]: value });
@@ -114,23 +117,6 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
   const onHandleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // setLoading(true);
-      // if (submitQuestion.question.trim() === '' || answeroption.length === 0) {
-      //   // alert('Please fill in the question and at least one option.');
-      //   toast.error('Please fill in the question and at least one option', {
-      //     position: 'top-right',
-      //     autoClose: 5000,
-      //     hideProgressBar: false,
-      //     closeOnClick: true,
-      //     pauseOnHover: true,
-      //     draggable: true,
-      //     progress: undefined,
-      //     theme: 'light',
-      //   });
-      //   setLoading(false);
-      //   return;
-      // }
-
       if (editingQus) {
         console.log(editingQus, "gunjan");
         setLoading(true);
@@ -163,12 +149,15 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
         }
       } else {
         setLoading(true);
+        
 
-        if (answeroption.length == 0 || answeroption.length <= 2) {
-          alert("please add atleast two option for the question");
+        if (answeroption.length == 0 || answeroption.length < 2) {
+          setError(true)
+          setErrormsg("Please add atleast two option for the question");
         }
 
          else  {
+          setError(false)
           let iscorrect=false
           for(let i of answeroption){
             if(i.iscorrect==true){
@@ -176,22 +165,25 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
             }
           }
         if(iscorrect==false){
-          alert('Please select one option as an answere')
+          setError(true)
+          setErrormsg('Please select one option as an answer')
         }else{
           await addQuestionToFirebase(
             submitQuestion.question,
             submitQuestion.description,
             answeroption
           )
+          setShowPopups(false);
+          setSubmitQuestions({
+            question: "",
+            description: "",
+          });
+          setAnsweroption([]);
         }
         }
       }
-      setSubmitQuestions({
-        question: "",
-        description: "",
-      });
-      setAnsweroption([]);
-      setShowPopups(false);
+     
+      
       setLoading(false);
     } catch (error) {
       console.error("Error submitting question: ", error);
@@ -218,6 +210,7 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
   }
   return (
     <div className="bg-white p-5 rounded-[10px] flex flex-col gap-2.5 w-[490px] max-w-[490px] relative z-50 ">
+      {error && <small style={{color:'red'}}> Error : {errormsg}</small>}
       <h2 className="ff_ubuntu font-bold text-lg capitalize text-black">
         Add Question
       </h2>
@@ -303,8 +296,8 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editingQus }) => {
           })}
         </div>
         <div className="flex justify-end gap-2 border-t border-black/20 pt-5 mt-5 ">
-          <button className="ff_outfit bg-[#8C8C8C] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 ">
-            <ResetIcon /> Reset
+          <button onClick={handleReset} className="ff_outfit bg-[#8C8C8C] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 ">
+            <ResetIcon  /> Reset
           </button>
           <button
             type="submit"
