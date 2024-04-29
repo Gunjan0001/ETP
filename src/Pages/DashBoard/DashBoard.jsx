@@ -212,15 +212,16 @@ const DashBoard = () => {
             </div>
           </div>
           <div className="catt">
-            <LineChart
-              xAxis={[{ data: studentData.map((e) => e.date) }]}
-              series={[
-                { data: studentData.map((e) => e.count) },
-                { data: studentData.map((e) => e.closed) },
-              ]}
-              height={373}
-            />
-          </div>
+  <LineChart
+    xAxis={[{ data: studentData.map((e) => e.date) }]}
+    series={[
+      { data: studentData.map((e) => e.count), color: 'red' }, // Set red color for 'count' series
+      { data: studentData.map((e) => e.closed), color: 'green' }, // Set green color for 'closed' series
+    ]}
+    height={373}
+  />
+</div>
+
         </div>
         <p className="mb-0 font-medium my-4">Recently Closed</p>
         <div className="overflow-x-auto table_hight2 mt-8">
