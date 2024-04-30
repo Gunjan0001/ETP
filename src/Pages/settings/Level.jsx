@@ -31,9 +31,14 @@ const Level = ({
         className={`border-b border-black/20 mt-3 bg-white ${addedQuestionCls}`}
       >
         <div className="flex justify-between items-center">
-          <h2 className="font-semibold text-lg ff_outfit text-black capitalize">
+         <div>
+         <h2 className="font-semibold text-lg ff_outfit text-black capitalize">
             Level :{level}
           </h2>
+          <h2 className="text-base ff_outfit text-black capitalize">
+          {title}
+          </h2>
+         </div>
           {deletePopup === true ? (
             <div className="w-[500px]  bg-white fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] p-8  rounded-2xl z-[100]">
               <p className="text-lg font-medium text-black text-center">
