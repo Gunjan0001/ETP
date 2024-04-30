@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { AddItemIcon } from '../../Components/Icons';
-import Level from './Level';
-import { QuestiongetterContext } from '../../Components/Context/TestQuestions';
-import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
-import Loader from '../Loader';
+import React, { useEffect, useState } from "react";
+import { AddItemIcon } from "../../Components/Icons";
+import Level from "./Level";
+import { QuestiongetterContext } from "../../Components/Context/TestQuestions";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase";
+import Loader from "../Loader";
 
-const AddQuestionnaire = ({ hanleclosepopup, editData, lavelId, setShowPopups }) => {
+import { toast } from "react-toastify"; // Add this line
+import "react-toastify/dist/ReactToastify.css"; // Add this line
+const AddQuestionnaire = ({
+  hanleclosepopup,
+  editData,
+  lavelId,
+  setShowPopups,
+}) => {
   const { QuestionsData, addQuestionaire } = QuestiongetterContext();
   const [addQuestions, setAddQuestions] = useState(false);
   const [loading, setloading] = useState(false);
@@ -15,8 +22,8 @@ const AddQuestionnaire = ({ hanleclosepopup, editData, lavelId, setShowPopups })
   }, 0);
 
   const [submitQuestion, setSubmitQuestions] = useState({
-    title: editData ? editData.title : '',
-    des: editData ? editData.description : '',
+    title: editData ? editData.title : "",
+    des: editData ? editData.description : "",
   });
   function handleInputChange(e) {
     let name = e.target.name;
@@ -27,8 +34,8 @@ const AddQuestionnaire = ({ hanleclosepopup, editData, lavelId, setShowPopups })
   const handleAddQuestionaire = async (e) => {
     e.preventDefault();
 
-    if (Object.values(submitQuestion).some((value) => value.trim() === '')) {
-      alert('Please fill in all fields.');
+    if (Object.values(submitQuestion).some((value) => value.trim() === "")) {
+      alert("Please fill in all fields.");
       return;
     }
 
@@ -46,34 +53,66 @@ const AddQuestionnaire = ({ hanleclosepopup, editData, lavelId, setShowPopups })
       // If editData is present, update the existing level
       try {
         setloading(true);
-        await updateDoc(doc(db, 'Test', lavelId), data2);
+        await updateDoc(doc(db, "Test", lavelId), data2);
         setloading(false);
-        alert('Level updated successfully');
+        toast.success("Level Updated Successfully", {
+          position: "top-right",
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         hanleclosepopup();
       } catch (error) {
         setloading(false);
-        console.error('Error updating level: ', error);
-        alert('Error updating level. Please try again.');
+        console.error("Error updating level: ", error);
+        toast.success("Error updating level. Please try again.", {
+          position: "top-right",
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } else {
       // If editData is not present, add a new level
       try {
         setloading(true);
-        const docRef = await addDoc(collection(db, 'Test'), data);
+        const docRef = await addDoc(collection(db, "Test"), data);
         await addQuestionaire({ ...data, id: docRef.id });
         setloading(false);
-        alert('Questionnaire added successfully');
+        toast.success("Questionnaire added successfully", {
+          position: "top-right",
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         hanleclosepopup();
       } catch (error) {
         setloading(false);
-        console.error('Error adding questionnaire: ', error);
-        alert('Error adding questionnaire. Please try again.');
+        console.error("Error adding questionnaire: ", error);
+        toast.success("Error adding questionnaire. Please try again.", {
+          position: "top-right",
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     }
 
     setSubmitQuestions({
-      title: '',
-      des: '',
+      title: "",
+      des: "",
     });
   };
 
@@ -83,10 +122,15 @@ const AddQuestionnaire = ({ hanleclosepopup, editData, lavelId, setShowPopups })
 
   return (
     <div className="bg-white p-5 rounded-[10px] flex flex-col gap-2.5 w-[490px] max-w-[490px] z-40">
-      <h2 className="ff_ubuntu font-bold text-lg capitalize text-black">Add Questionnaire</h2>
+      <h2 className="ff_ubuntu font-bold text-lg capitalize text-black">
+        Add Questionnaire
+      </h2>
       <form className="flex flex-col gap-2.5">
         <div className="flex flex-col gap-1">
-          <label htmlFor="title" className="ff_ubuntu font-normal text-sm text-black capitalize">
+          <label
+            htmlFor="title"
+            className="ff_ubuntu font-normal text-sm text-black capitalize"
+          >
             Title
           </label>
           <input
@@ -101,7 +145,7 @@ const AddQuestionnaire = ({ hanleclosepopup, editData, lavelId, setShowPopups })
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label htmlFor="des">Description</label>{' '}
+          <label htmlFor="des">Description</label>{" "}
           <textarea
             className="border-none outline-none p-2.5 text-black/50 bg-[#EEEEEE] text-base rounded-[10px] h-[80px] resize-none"
             name="des"
@@ -109,7 +153,8 @@ const AddQuestionnaire = ({ hanleclosepopup, editData, lavelId, setShowPopups })
             required
             value={submitQuestion.des}
             placeholder="Enter detailed instructions"
-            onChange={handleInputChange}></textarea>
+            onChange={handleInputChange}
+          ></textarea>
         </div>
         <div className="flex justify-end">
           <button
@@ -117,8 +162,9 @@ const AddQuestionnaire = ({ hanleclosepopup, editData, lavelId, setShowPopups })
               handleAddQuestionaire(e);
               setShowPopups(false);
             }}
-            className="ff_outfit bg-[#FF2000] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 hover:bg-transparent hover:border-[#ff2000] hover:text-[#ff2000] duration-300 group">
-            <AddItemIcon /> {editData ? 'Update Section' : 'Add Section'}
+            className="ff_outfit bg-[#FF2000] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 hover:bg-transparent hover:border-[#ff2000] hover:text-[#ff2000] duration-300 group"
+          >
+            <AddItemIcon /> {editData ? "Update Section" : "Add Section"}
           </button>
         </div>
       </form>

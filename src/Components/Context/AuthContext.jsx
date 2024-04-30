@@ -18,6 +18,7 @@ export function UserAuthContextProvider({ children }) {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        setLoading(false);
         toast.success("Login successful", {
           position: "top-right",
           hideProgressBar: false,
@@ -27,7 +28,6 @@ export function UserAuthContextProvider({ children }) {
           progress: undefined,
           theme: "light",
         });
-        setLoading(false);
         return userCredential;
       })
       .catch((error) => {
@@ -108,7 +108,7 @@ export function UserAuthContextProvider({ children }) {
     <authContext.Provider value={{ loginUser, logoutUser }}>
       {children}
       <ToastContainer />
-      <CustomToaster />
+      {/* <CustomToaster /> */}
     </authContext.Provider>
   );
 }

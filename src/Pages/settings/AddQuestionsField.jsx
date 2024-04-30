@@ -18,14 +18,21 @@ import { db } from "../../firebase";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "../Loader";
 import { QuestiongetterContext } from "../../Components/Context/TestQuestions";
-const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editQuestionData, editingIndex, LevelIDD }) => {
+const AddQuestionsField = ({
+  setShowPopups,
+  levelId,
+  LavelId,
+  editQuestionData,
+  editingIndex,
+  LevelIDD,
+}) => {
   const [chooseAns, setChooseAns] = useState(null);
   const [addQuestions, setAddQuestions] = useState(false);
   const [answeroption, setAnsweroption] = useState([]);
   const [answertext, setAnswertext] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false)
-  const [errormsg, setErrormsg] = useState("")
+  const [error, setError] = useState(false);
+  const [errormsg, setErrormsg] = useState("");
   const [submitQuestion, setSubmitQuestions] = useState({
     question: "",
     description: "",
@@ -102,67 +109,76 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editQuestionData, 
       console.error("Error updating document: ", error);
       alert("Error updating document. Please try again.");
     }
-
   }
 
-
-
-
   function handleInputChange(e) {
-    setError(false)
+    setError(false);
     let name = e.target.name;
     let value = e.target.value;
     setSubmitQuestions({ ...submitQuestion, [name]: value });
   }
 
-
-
   async function AddnewQuestion(e) {
-    e.preventDefault()
+    e.preventDefault();
     try {
       setLoading(true);
       if (answeroption.length == 0 || answeroption.length < 2) {
-        setError(true)
+        setError(true);
         setErrormsg("Please add atleast two option for the question");
-      }
-      else {
-        setError(false)
-        let iscorrect = false
+      } else {
+        setError(false);
+        let iscorrect = false;
         for (let i of answeroption) {
           if (i.iscorrect == true) {
-            iscorrect = true
+            iscorrect = true;
           }
         }
         if (iscorrect == false) {
-          setError(true)
-          setErrormsg('Please select one option as an answer')
+          setError(true);
+          setErrormsg("Please select one option as an answer");
         } else {
           await addQuestionToFirebase(
             submitQuestion.question,
             submitQuestion.description,
             answeroption
-          )
+          );
           setShowPopups(false);
           setSubmitQuestions({
             question: "",
             description: "",
           });
           setAnsweroption([]);
+          
+          
         }
       }
       setLoading(false);
-    }
-    catch (error) {
+      toast.success("Question added successfully", {
+            position: "top-right",
+            autoClose: 3000, // Close the notification after 3 seconds
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "light",
+          });
+      
+    } catch (error) {
       console.error("Error submitting question: ", error);
-      alert(`Error submitting question: ${error.message}`);
+      // alert(`Error submitting question: ${error.message}`);
+      toast.success(`Error submitting question: ${error.message}`, {
+        position: "top-right",
+        autoClose: 3000, // Close the notification after 3 seconds
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
     } finally {
       setLoading(false); // Reset loading state after submission
     }
   }
-
-
-
-
 
   async function UpdateNewQuestion(e) {
     e.preventDefault();
@@ -188,12 +204,20 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editQuestionData, 
         }));
         setQuestionsData(QuestionList);
         setLoading(false);
-        console.log("Document updated successfully")
+        toast.success("Document updated successfully", {
+          position: "top-right",
+          autoClose: 3000, // Close the notification after 3 seconds
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
       } else {
         throw new Error("Invalid question index.");
       }
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       console.log("Error in update Data");
     }
   }
@@ -213,8 +237,9 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editQuestionData, 
     return <Loader />;
   }
   return (
+   <>
     <div className="bg-white p-5 rounded-[10px] flex flex-col gap-2.5 w-[490px] max-w-[490px] relative z-50 z-[999]">
-      {error && <small style={{ color: 'red' }}> Error : {errormsg}</small>}
+      {error && <small style={{ color: "red" }}> Error : {errormsg}</small>}
       <h2 className="ff_ubuntu font-bold text-lg capitalize text-black">
         Add Question
       </h2>
@@ -303,17 +328,21 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editQuestionData, 
           {/* {!editQuestionData && <button className="ff_outfit bg-[#8C8C8C] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 ">
             <ResetIcon /> Reset
           </button>} */}
-          {editQuestionData ? <button
-            onClick={(e) => UpdateNewQuestion(e)}
-            className="ff_outfit bg-[#FF2000] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 hover:bg-transparent hover:border-[#ff2000] hover:text-[#ff2000] duration-300 group"
-          >
-            <AddItemIcon /> {"update"}
-          </button> : <button
-            onClick={(e) => AddnewQuestion(e)}
-            className="ff_outfit bg-[#FF2000] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 hover:bg-transparent hover:border-[#ff2000] hover:text-[#ff2000] duration-300 group"
-          >
-            <AddItemIcon /> {"Add"}
-          </button>}
+          {editQuestionData ? (
+            <button
+              onClick={(e) => UpdateNewQuestion(e)}
+              className="ff_outfit bg-[#FF2000] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 hover:bg-transparent hover:border-[#ff2000] hover:text-[#ff2000] duration-300 group"
+            >
+              <AddItemIcon /> {"update"}
+            </button>
+          ) : (
+            <button
+              onClick={(e) => AddnewQuestion(e)}
+              className="ff_outfit bg-[#FF2000] text-white font-normal text-base flex items-center justify-center rounded-[10px] gap-2 outline-none border border-transparent py-2.5 px-3 hover:bg-transparent hover:border-[#ff2000] hover:text-[#ff2000] duration-300 group"
+            >
+              <AddItemIcon /> {"Add"}
+            </button>
+          )}
         </div>
         {addQuestions && (
           <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center z-30">
@@ -327,6 +356,7 @@ const AddQuestionsField = ({ setShowPopups, levelId, LavelId, editQuestionData, 
       </form>
       <ToastContainer></ToastContainer>
     </div>
+   </>
   );
 };
 export default AddQuestionsField;
